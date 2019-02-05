@@ -1,0 +1,130 @@
+<html>
+	<header>
+  		
+		<link rel="stylesheet" href="login.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="accountability.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="history.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="inventory.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+		<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  	var config = {
+			    apiKey: "AIzaSyAS0sFpZAeffhYaWKy7yrOegT5U4FtGX0A",
+			    authDomain: "liarsproject.firebaseapp.com",
+			    databaseURL: "https://liarsproject.firebaseio.com",
+			    projectId: "liarsproject",
+			    storageBucket: "liarsproject.appspot.com",
+			    messagingSenderId: "497341972181"
+					  };
+			firebase.initializeApp(config);
+		</script>
+	</header>
+	<body>
+		<div id="tabmenu">
+			<ul>
+			   <li id="inventory"  class='active' onclick="inventory()"><a href='#' >Inventory</a></li>
+			   <li id="history" onclick="history()"><a href='#' >History</a></li>
+			   <li id="accountability"  onclick="accountability()"><a href='#'>Accountability</a></li>
+			   <li><a id="logoutBtn" onclick="logout()">Logout</a></li>
+			</ul>
+		</div>	
+
+		<div class="slider">
+			kajshd
+		</div>
+
+		<div class="content">
+			<button onclick="createGroup()"> Create groupings</button>
+			<div id="createGroup_div" style="display: none;">
+				<table id="createGroup_table">
+					<tr>
+						<th> Section </th> <th> Students</th> <th> Item ID </th>
+					</tr>
+					<tbody id="create_tbody"></tbody>
+					
+					
+				</table>
+				<button onclick="addGroup()" id="addGroup_btn">Add new group</button>
+				<button onclick="saveGroup()" id="saveGroup_btn" style="display: none">Save groups</button>
+			</div>
+		</div>
+	</body>
+</html>
+
+<script type="text/javascript">
+
+	function createGroup(){
+		document.getElementById("createGroup_div").style.display="block";
+		 getGroupings();
+	}
+	function addGroup(){
+		var markup = "<tr><td><input id='newSection'> </input></td><td> <input id='newStudents'> </input></td><td><input id='newItem'> </input></td></tr>";
+		$("#createGroup_table").append(markup);
+		document.getElementById("addGroup_btn").style.display="none";
+		document.getElementById("saveGroup_btn").style.display="block";
+	}
+	function saveGroup(){
+		document.getElementById("addGroup_btn").style.display="block";
+		document.getElementById("saveGroup_btn").style.display="none";
+		var values = $("#newSection").val() +  $("#newStudents").val()  + $("#newItem").val();
+		console.log(values);
+	}
+	function getGroupings(){
+		var newTD = ""
+		var chemistryDataRef = firebase.database().ref("trialdata");
+		chemistryDataRef.orderByChild("sectionID").limitToFirst(5).once("value").then(function(snapshot) {
+		
+		var data = snapshotToArray(snapshot);
+		console.log(data)
+		data.forEach(function(item){
+			newTD = "";
+			console.log(item);
+			newTD += "<tr> <td>"+ item.sectionID + "</td> <td> "+ item.students+ "</td> <td>"+ item.itemID+"</td></tr>";
+			$("#createGroup_table").append(newTD);
+		});
+	});
+		
+}
+</script>
+
+		<script src="inventory.js"></script>
+
+<style type="text/css">
+	#createGroup_table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+}
+
+	#createGroup_table td, #createGroup_table th {
+	    border: 1px solid #ddd;
+	    padding: 5px;
+	}
+
+	#createGroup_table tr:nth-child(even){background-color: #f2f2f2;}
+
+	#createGroup_table tr:hover {background-color: #ddd;}
+
+	#createGroup_table th {
+	    padding-top: 10px;
+	    padding-bottom: 10px;
+	    text-align: left;
+	    background-color: #47c9af;
+	    color: white;
+	}
+	.slider {
+		width: 20%;
+		background-color: green;
+		float: left;
+	}
+	.content{
+		width: 80%;
+		float: right;
+	}
+	
+</style>

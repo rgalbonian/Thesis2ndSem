@@ -1,0 +1,276 @@
+/* login */
+body{
+	background-color: #80A5AB;
+}
+.login{
+	margin-top: 100px;
+	width: 500px;
+	background-color: #F5F6F1;
+}
+
+/* tab menu */
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+#tabmenu,
+#tabmenu ul,
+#tabmenu ul li,
+#tabmenu ul li a {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  line-height: 1;
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#tabmenu:after,
+#tabmenu > ul:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+}
+#tabmenu {
+  width: auto;
+  border-bottom: 3px solid #47c9af;
+  font-family: Raleway, sans-serif;
+  line-height: 1;
+}
+#tabmenu ul {
+  background: #ffffff;
+}
+#tabmenu > ul > li {
+  float: left;
+}
+#tabmenu.align-center > ul {
+  font-size: 0;
+  text-align: center;
+}
+#tabmenu.align-center > ul > li {
+  display: inline-block;
+  float: none;
+}
+#tabmenu.align-right > ul > li {
+  float: right;
+}
+#tabmenu.align-right > ul > li > a {
+  margin-right: 0;
+  margin-left: -4px;
+}
+#tabmenu > ul > li > a {
+  z-index: 2;
+  padding: 18px 25px 12px 25px;
+  font-size: 15px;
+  font-weight: 400;
+  text-decoration: none;
+  color: #444444;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -ms-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+  margin-right: -4px;
+}
+#tabmenu > ul > li.active > a,
+#tabmenu > ul > li:hover > a,
+#tabmenu > ul > li > a:hover {
+  color: #ffffff;
+}
+#tabmenu > ul > li > a:after {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  width: 100%;
+  height: 120%;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  content: "";
+  -webkit-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+  -webkit-transform: perspective(5px) rotateX(2deg);
+  -webkit-transform-origin: bottom;
+  -moz-transform: perspective(5px) rotateX(2deg);
+  -moz-transform-origin: bottom;
+  transform: perspective(5px) rotateX(2deg);
+  transform-origin: bottom;
+}
+#tabmenu > ul > li.active > a:after,
+#tabmenu > ul > li:hover > a:after,
+#tabmenu > ul > li > a:hover:after {
+  background: #47c9af;
+}
+
+
+.myAlert-top{
+    position: fixed;
+    top: 5px; 
+    left:2%;
+    width: 96%;
+}
+
+/*pending/completed/declined container for items*/
+.items-div-pcd{
+	padding:10px;
+	margin: 10px;
+	height: 80%;
+	width: 70%;
+	float: center;
+	background-color: pink;
+	border: solid 1px grey;
+	overflow-y: scroll;
+
+	margin: 10px auto;
+	text-align: left;
+}
+.card-div-pending{
+	background-color: skyblue;
+	height: auto;
+	padding: 10px;
+	padding-bottom: 50px;
+	margin: 10px;
+}
+
+.searchBar {
+	margin: 14px;
+    width: 20%;
+    box-sizing: border-box;
+    border: 2px solid #47c9af;
+    font-size: 14px;
+    background-color: white;
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 8px 15px 8px 20px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    float: left;
+}
+
+
+.searchBarLong {
+  margin-bottom: 14px;
+    width: 90%;
+    box-sizing: border-box;
+    border: 2px solid #47c9af;
+    font-size: 14px;
+    background-color: white;
+    background-image: url('searchicon.png');
+    background-position: 10px 10px; 
+    background-repeat: no-repeat;
+    padding: 8px 15px 8px 20px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+    float: left;
+}
+
+.searchicon{
+    position: absolute;
+    margin-top: 14px;
+    margin-left:-60px;
+    background-color: #47c9af;
+   
+    
+    border: 2px solid #47c9af;
+}
+.searchicon:hover{
+  background-color: #47c9af;
+}
+.searchBar:focus{
+    outline-color: #47c9af;
+}
+.searchimg{
+  background-color: #47c9af;
+}
+.inventoryBtn {
+  padding: 10px 15px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  float:right;
+  margin-right:10px;
+}
+
+.inventoryBtn:hover {background-color: gray;}
+
+.cat-div{
+	/*background-color: skyblue;*/
+	height: 70%;
+}
+.filter-btn{
+  padding: 10px 15px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+  width: 100%;
+}
+
+.radio-container {
+  display: block;
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 3px;
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+
+}
+
+/* Hide the browser's default radio button */
+.radio-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 4;
+  left:5;
+  height: 15px;
+  width: 15px;
+  background-color: #eee;
+  border-radius: 50%;
+  border: solid 1px #47c9af;
+}
+
+/* On mouse-over, add a grey background color */
+.radio-container:hover input ~ .checkmark {
+  background-color: #47c9af;
+}
+
+/* When the radio button is checked, add a blue background */
+.radio-container input:checked ~ .checkmark {
+  background-color: #47c9af;
+}
+
+/* Create the indicator (the dot/circle - hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the indicator (dot/circle) when checked */
+.radio-container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the indicator (dot/circle) */
+.radio-container .checkmark:after {
+  top: 4px;
+  left: 4px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: white;
+}

@@ -1,0 +1,28 @@
+
+#wrapper{
+	padding-top: 2%;
+	padding-left: 10%;
+  padding-bottom: 2%;
+}
+#accountTable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+}
+
+#accountTable td, #accountTable th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+#accountTable tr:nth-child(even){background-color: #f2f2f2;}
+
+#accountTable tr:hover {background-color: #47c9af;}
+
+#accountTable th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+    background-color: #47c9af;
+    color: white;
+}

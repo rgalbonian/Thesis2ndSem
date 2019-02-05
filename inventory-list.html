@@ -1,0 +1,66 @@
+<html>
+<script src="https://www.gstatic.com/firebasejs/5.5.3/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAS0sFpZAeffhYaWKy7yrOegT5U4FtGX0A",
+    authDomain: "liarsproject.firebaseapp.com",
+    databaseURL: "https://liarsproject.firebaseio.com",
+    projectId: "liarsproject",
+    storageBucket: "liarsproject.appspot.com",
+    messagingSenderId: "497341972181"
+  };
+  firebase.initializeApp(config);
+</script> 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+	<div id="wrapper">
+		Inventory as of <p id="date"></p>
+	<div id="inventorydiv">
+		
+  </div>
+</div>
+
+  <script src="inventory-list.js"></script>
+</body>
+</html>
+
+
+<style>
+#wrapper{
+	padding-top: 2%;
+	padding-left: 10%;
+}
+#date{
+	display: inline;;
+}
+
+#inventorytable {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 90%;
+    margin-bottom: 5%;
+}
+
+#inventorytable td, #inventorytable th {
+    border: 1px solid #ddd;
+    padding: 5px;
+}
+
+#inventorytable tr:nth-child(even){background-color: #f2f2f2;}
+
+#inventorytable tr:hover {background-color: #ddd;}
+
+#inventorytable th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    text-align: left;
+    background-color: grey;
+    color: white;
+}
+</style>
