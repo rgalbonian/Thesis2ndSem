@@ -1,5 +1,5 @@
 //filter variables with default values
-var filterCat = "metals";
+var filterCat = "metal";
 var lab = "chemistry"
 var order = "name";
 var setOrder = "name";
@@ -7,6 +7,7 @@ var searchQueryInventory = ""
 var namedir = "az"
 var quandir = "asc";
 var reverseData = false;
+var validateCheck = false;
 function inventory(){
 	clearInterval(accountabilityloading);
 	clearInterval(historyloading);
@@ -87,15 +88,53 @@ $( "#add-item-btn").click(function(){
 });
 
 $(document).on("click", "#modal-confirm-summary-btn", function(event){
-	console.log("you bebeh");
+	var name, category, quantity, amount, unit, image;
+  	var name = $("#item-name").val()
+	var image = $('#item-image').get(0).files[0];
+    var category = $("input[name='itemCat']:checked").val();
+
+    if (category == "apparatus"){
+    	var quantity = $("#item-quantity").val()
+    	var chemicalsRef = firebase.database().ref("2/" + lab + "/" + "chemicals" +"/" + category);
+	
+		var addChemicals = chemicalsRef.push({
+	 	name: name,
+	 	image: image,
+	 	category: category,
+	 	id: 1,
+	 	quantity: quantity
+		});
+    }else {
+    	
+    	var amount = $("#item-amount").val()
+      	var unit = $("#item-unit").val()
+    	var chemicalsRef = firebase.database().ref("2/" + lab + "/" + "chemicals" +"/" + category);
+	
+		var addChemicals = chemicalsRef.push({
+	 	name: name,
+	 	image: image,
+	 	category: category,
+	 	id: 1,
+	 	amount: amount,
+	 	unit: unit
+		});
+    }
+
+	//console.log("you bebeh");
+	
 	$('#item-summary-modal').modal('hide')
 	$('#add-item-modal').modal('hide')
 	$('#alertModal').modal('show')
-	$('input').val('');
+	var preview = document.querySelector("#img-previewer");
+	preview.src = "images/add-item-default.png";
+	$('#add-item-modal').find('input').val('');
+	$('#add-item-modal').find('span').html('');
+	
 });
 $(document).on("click", "#modal-edit-summary-btn", function(event){
 	console.log("wasss")
 	$("#add-item-modal").find("span").html("");
+	validateCheck = false;
 });
 
 $("#add-item-modal").on("hidden.bs.modal", function () {
@@ -118,8 +157,8 @@ $(document).on("click", "#modal-add-btn", function(event){
     	$("#sum-amount").html("");
     	$("#sum-unit").html("");
     	var quantity = $("#item-quantity").val()
-    	var check = validateItem(name, category, quantity, amount, unit, image);
-    	if (check){
+    	var validateCheck = validateItem(name, category, quantity, amount, unit, image);
+    	if (validateCheck){
        		$("#sum-quan").html("Quantity: " + quantity + "<br>");
     		console.log(name + quantity + category, image);
     		$('#item-summary-modal').modal('show');
@@ -128,8 +167,8 @@ $(document).on("click", "#modal-add-btn", function(event){
     	$("#sum-quan").html("");
     	var amount = $("#item-amount").val()
       	var unit = $("#item-unit").val()
-    	var check = validateItem(name, category, quantity, amount, unit, image);
-    	if (check){
+    	var validateCheck = validateItem(name, category, quantity, amount, unit, image);
+    	if (validateCheck){
       		$("#sum-amount").html("Amount: " + amount +  "<br>");
     		$("#sum-unit").html("Unit: " +unit);
       		console.log(name + amount + unit + category);
@@ -153,7 +192,7 @@ function filterTab() {
 	var filterHTML = ""
 	if (lab == "chemistry") {
 				console.log("you here?")
-			filterHTML += " <label class='radio-container'>Metal <input type='radio' name='categories'  class='cat' value='metals' checked> <span class='checkmark'></span></label> 					<label class='radio-container'>Non-metal <input type='radio' name='categories'  class='cat' value='nonmetals'> <span class='checkmark'></span></label><label class='radio-container'>Apparatus <input type='radio' name='categories'  class='cat' value='apparatus' > <span class='checkmark'></span></label> "
+			filterHTML += " <label class='radio-container'>Metal <input type='radio' name='categories'  class='cat' value='metal' checked> <span class='checkmark'></span></label> 					<label class='radio-container'>Non-metal <input type='radio' name='categories'  class='cat' value='nonmetal'> <span class='checkmark'></span></label><label class='radio-container'>Apparatus <input type='radio' name='categories'  class='cat' value='apparatus' > <span class='checkmark'></span></label> "
 			var container = document.getElementById("categories-div");
 			container.innerHTML = filterHTML;
 	}
@@ -191,14 +230,15 @@ function loadItems(){
 		   function(a, b) {
 		      return a[setOrder] > b[setOrder] ? 1 : -1;
 		   });
-
+	console.log(reverseData)
 	if (reverseData){
+		console.log("reversing");
 		data.reverse();
 	}
 	if (data.length == 0){
 		itemsCard = "No item matched your request."
 	}
-	if (filterCat == "metals" || filterCat == "nonmetals"){
+	if (filterCat == "metal" || filterCat == "nonmetal"){
 		data.forEach(function(item){
 		  itemsCard += '<div class="card-div"> <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit: ' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn"> View history </button> <button class="btn-info btn card-btn"> Update </button> </div>';
 		});
@@ -240,7 +280,7 @@ function loadItems(){
 		console.log("was here")
 		setOrder = "name"
 
-		if (filterCat == "metals" || filterCat == "nonmetals"){
+		if (filterCat == "metal" || filterCat == "nonmetal"){
 			getChemicals();
 		}else {
 			getApparatus();
@@ -248,7 +288,7 @@ function loadItems(){
 
 	}else{
 		console.log("ngaa wala")
-		if (filterCat == "metals" || filterCat == "nonmetals"){
+		if (filterCat == "metal" || filterCat == "nonmetal"){
 			console.log("ngaaaaaaaaaaaaaaaaaa")
 			setOrder = "amount"
 			getChemicals();

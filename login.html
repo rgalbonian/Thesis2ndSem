@@ -633,8 +633,9 @@
 				    <!-- Modal content-->
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <button type="button" class="close" data-dismiss="modal">&times;</button>
 				        <h4 class="modal-title">Item Summary</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
 				      </div>
 				      <div class="modal-body">
 				        <span id="sum-name"></span><br>
@@ -642,7 +643,7 @@
 				        <span id="sum-quan"></span>
 				        <span id="sum-amount"></span>
 				        <span id="sum-unit"></span>
-
+				        <span style="height:25px;display: block;"> </span>
 				        <div class="summary-img-preview">
 				        <img height="300" src="images/add-item-default.png" alt="preview" id="sum-image" >
 				        </div> <br>
@@ -674,6 +675,11 @@
 			 	<div id="wrapper">
 			 		<input class="searchBarLong" name="search" id="searchQueryHistory" placeholder="Filter history..">
 			        
+			 		<div id="history-loader">
+						<center>
+							<img src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif">
+						</center>
+					</div>
 
 				    <div id="historytablediv"></div>
 				  </div>

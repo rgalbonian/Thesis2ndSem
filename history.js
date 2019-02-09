@@ -1,8 +1,8 @@
-varsearchQueryHistory = "";
+var searchQueryHistory = "";
 function history() {
 	clearInterval(accountabilityloading);
-
-	historyloading = setInterval(loadJSONdataHistory, 3000);
+	loadHistory();
+	//historyloading = setInterval(loadHistory, 3000);
 	//show and active history
 	document.getElementById("history").classList.add("active");
 	document.getElementById("history_div").style.display="block";
@@ -17,32 +17,6 @@ function history() {
 }
 
 /*
-$( document ).ready(function() {
-	console.log("hehehe");
-
-	var history = "";
-	history += "<table id='historytable'><tr> <th>User</th><th>Type</th><th>Content</th><th>Date</th><th>Time</th></tr>"
-	var systemlogRef = firebase.database().ref("7/systemlog");
-	systemlogRef.once("value").then(function(snapshot) {
-	snapshot.forEach(function(childSnapshot) {
-	  var key = childSnapshot.key;
-	  var childData = childSnapshot.val();      
-	  var user = childSnapshot.val().user;
-	  
-	  var type = childSnapshot.val().type;
-	  var content = childSnapshot.val().content;
-	  var date = childSnapshot.val().date;
-	  var time = childSnapshot.val().time;
-	  history += "<tr> <td>" + user + " </td> <td>"+type+ "</td><td>" +content+ "</td><td>" +date+ "</td><td>"+time +"</td> </tr>";
-	  });
-
-	
-	var container = document.getElementById("historytablediv");
-	container.innerHTML = history;
-	console.log("vge");
-	});
-});
-
 
 $( document ).ready(function() {
 	loadJSONdataHistory();
@@ -55,16 +29,64 @@ $( document ).ready(function() {
 $( "#searchHistory").click(function() {
 	searchQueryHistory = $("#searchQueryHistory").val();
 	console.log(searchQueryHistory);
-	loadJSONdataHistory()
+	loadHistory()
 	//loadItems();
 });
+
+searching = document.getElementById("searchQueryHistory");
+searching.oninput = func;
+function func() {
+  loadHistory();
+}
 
 function filteringHistory(element) {
 	var regex = new RegExp(searchQueryHistory, 'gi' );
     return (element['user'].match(regex) || element['type'].match(regex) || element['content'].match(regex));
 }
 
-function loadJSONdataHistory(){
+function loadHistory(){
+	document.getElementById("history-loader").style.display = "block"; 
+
+   	document.getElementById("historytablediv").style.display = "none";	
+	searchQueryHistory = $("#searchQueryHistory").val();
+	console.log("loading history" + searchQueryHistory)
+	
+	var history = "";
+
+	history += "<table id='historytable'><tr> <th>User</th><th>Type</th><th>Content</th><th>Date</th><th>Time</th></tr>"
+	
+	var historyDataRef = firebase.database().ref("7/systemlog");
+	historyDataRef.orderByKey().once("value").then(function(snapshot) {
+	
+	var data = snapshotToArray(snapshot);
+	data = data.filter(filteringHistory);
+	console.log(data)
+    data.sort(function(a, b){
+	        	if(a.date < b.date) { return -1; }
+			    if(a.date > b.date) { return 1; }
+			    return 0;
+	        });
+
+	if (data.length == 0){
+		history += "<tr> <td colspan=5>No records found. </tr> </td>"
+	}
+	data.forEach(function(item){
+    	history += "<tr> <td>" + item.user + " </td> <td>"+item.type+ "</td><td>" +item.content+ "</td><td>" + item.date + "</td><td>"+ item.time +"</td> </tr>";
+	});
+	
+	
+    
+
+	var container = document.getElementById("historytablediv");
+	container.innerHTML = history;
+
+	document.getElementById("history-loader").style.display = "none"; 	
+   	document.getElementById("historytablediv").style.display = "block";
+	console.log("vge");
+	});
+}
+
+/*
 	searchQueryHistory = $("#searchQueryHistory").val();
 	console.log("loadinggggggggggggg")
 
@@ -80,8 +102,7 @@ readTextFile(historyfile, function(text){
 	history += "<table id='historytable'><tr> <th>User</th><th>Type</th><th>Content</th><th>Date</th><th>Time</th></tr>"
 	console.log(searchQueryHistory);
 	var data = data.filter(filteringHistory);
-	console.log(data);
-    
+
     data.sort(function(a, b){
 	        	if(a.date < b.date) { return -1; }
 			    if(a.date > b.date) { return 1; }
@@ -98,5 +119,4 @@ readTextFile(historyfile, function(text){
 
 	var container = document.getElementById("historytablediv");
 	container.innerHTML = history;
-});
-}
+});*/

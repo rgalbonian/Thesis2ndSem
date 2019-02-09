@@ -20,13 +20,26 @@
 
 <body>
 	<div id="wrapper">
+    
 		Inventory as of <p id="date"></p>
+    <select name="inventorylist-category" id="inventorylist-category">
+  <option selected="selected" value="metal">Metals</option>
+  <option value="nonmetal">Non-metals</option>
+  <option value="apparatus">Apparatus</option>
+</select>
+<div id="inventorylist-loader">
+            <center>
+              <img src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif">
+            </center>
+          </div>
 	<div id="inventorydiv">
 		
   </div>
 </div>
 
   <script src="inventory-list.js"></script>
+
+    <script src="inventory.js"></script>
 </body>
 </html>
 
