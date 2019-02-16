@@ -670,10 +670,11 @@
 
 				  </div>
 				</div>
+
 			 <!--history-->
 			 <div id="history_div" style="display:none">
 			 	<div id="wrapper">
-			 		<input class="searchBarLong" name="search" id="searchQueryHistory" placeholder="Filter history..">
+			 		<input class="searchBarLong" name="searchQueryHistory" id="searchQueryHistory" placeholder="Filter history..">
 			        
 			 		<div id="history-loader">
 						<center>
@@ -703,3 +704,67 @@
 	</body>
 	
 </html>	
+
+
+<!--View History Modal-->
+				<div id="item-history-modal" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Item History</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				        <span id="hist-name"></span><br>
+				        <span id="hist-cat"></span><br>
+				        <span id="hist-quan"></span>
+				        <span id="hist-amount"></span>
+				        <span id="hist-unit"></span>
+				        <span style="height:25px;display: block;"> </span>
+				        <div class="hist-img-preview">
+				        <img height="300" src="images/add-item-default.png" alt="preview" id="sum-image" >
+				        </div> <br>
+				      
+				      </div>
+				      <div class="modal-footer">
+				        <button data-dismiss="modal" >OK</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+
+<!--Item update Modal-->
+				<div id="item-update-modal" class="modal fade" role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Update Item Status</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				        <span id="update-name"></span><br>
+				        <span id="update-cat"></span><br>
+				        <span id="update-quan"></span>
+				        <span id="update-amount"></span>
+				        <span id="update-unit"></span>
+				        <span style="height:25px;display: block;"> </span>
+				        <div class="update-img-preview">
+				        <img height="300" src="images/add-item-default.png" alt="preview" id="sum-image" >
+				        </div> <br>
+				      
+				      </div>
+				      <div class="modal-footer">
+				        <button class="btn modal-add-btn"  data-dismiss="modal" id="modal-confirm-update-btn"> Confirm </button>
+				        <button class="btn modal-cancel-btn" data-dismiss="modal" id="modal-cancel-summary-btn">Cancel</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>

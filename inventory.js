@@ -43,9 +43,31 @@ function inventory(){
 }
 
 
-$("#items-div").ready(function(){
-	console.log("ready")
-})
+function viewHistoryFunc(card) {
+	console.log(card.id);
+	var myitem = card.id;
+	var chemistryDataRef = firebase.database().ref("2/" + lab);
+	chemistryDataRef.child("chemicals").child(""+filterCat).orderByChild("name").equalTo(myitem).once("value").then(function(snapshot) {
+		snapshot.forEach(function(childSnapshot) {
+	        $("#hist-name").html("Item Name: "+ childSnapshot.val().name);
+    		$("#hist-cat").html("Category: " + childSnapshot.val().category);
+    	}); 
+	});
+	$('#item-history-modal').modal('show');
+}
+
+function updateFunc(card) {
+	console.log(card.id);
+	var myitem = card.id;
+	var chemistryDataRef = firebase.database().ref("2/" + lab);
+	chemistryDataRef.child("chemicals").child(""+filterCat).orderByChild("name").equalTo(myitem).once("value").then(function(snapshot) {
+		snapshot.forEach(function(childSnapshot) {
+	        $("#update-name").html("Item Name: "+ childSnapshot.val().name);
+    		$("#update-cat").html("Category: " + childSnapshot.val().category);
+    	}); 
+	});
+	$('#item-update-modal').modal('show');
+}
 
 $(document).on("change", "input[type=radio][name='itemCat']", function(event){
 	console.log("wtf");
@@ -71,7 +93,12 @@ $( "#searchInventory").click(function() {
 	//loadJSONdata()
 	loadItems();
 });
-
+$( "modal-confirm-update-btn").click(function() {
+	$('#item-update-modal').modal('hide');
+	$('#alertModal').modal('show')
+	alert("huhu");
+	console.log("huhu")
+});
 
 $( "#view-in-list").click(function() {
 	window.open('inventory-list.html', '_blank')
@@ -214,6 +241,8 @@ function loadAddItem(lab){
 	
 }
 
+
+
 function loadItems(){
 	document.getElementById("items-loader").style.display = "block"; 	
    	document.getElementById("items-div").style.display = "none";
@@ -221,11 +250,14 @@ function loadItems(){
 	console.log("getting items", filterCat, setOrder,searchQueryInventory)
 	
 	var itemsCard = "";
+	//connect to db and get elements
 	var chemistryDataRef = firebase.database().ref("2/" + lab);
 	chemistryDataRef.child("chemicals").child(""+filterCat).orderByChild(setOrder).once("value").then(function(snapshot) {
-	
+	//convert object to array
 	var data = snapshotToArray(snapshot);
+	//filter data, you can edit filtering() function (i mean create your own para indi maoverridae) depende sa need mo kung pano magfilter
 	data = data.filter(filtering);
+	//sort data based on attribute
 	data.sort(
 		   function(a, b) {
 		      return a[setOrder] > b[setOrder] ? 1 : -1;
@@ -238,13 +270,15 @@ function loadItems(){
 	if (data.length == 0){
 		itemsCard = "No item matched your request."
 	}
+	//use data.forEach for iterate sa data
 	if (filterCat == "metal" || filterCat == "nonmetal"){
 		data.forEach(function(item){
-		  itemsCard += '<div class="card-div"> <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit: ' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn"> View history </button> <button class="btn-info btn card-btn"> Update </button> </div>';
+			console.log("item id" +item.id)
+		  itemsCard += '<div class="card-div"  > <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit: ' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn view-history-btn" id='+item.name+' onclick="viewHistoryFunc(this)"> View history </button> <button class="btn-info btn card-btn" id='+item.name+' onclick="updateFunc(this)"> Update </button> </div>';
 		});
 	}else {
 		data.forEach(function(item){
-		  itemsCard += '<div class="card-div"> <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Quantity: '+item.quantity+'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn"> View history </button> <button class="btn-info btn card-btn"> Update </button> </div>';
+		  itemsCard += '<div class="card-div" > <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Quantity: '+item.quantity+'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn"  id='+item.name+' onclick="viewHistoryFunc(this)"> View history </button> <button class="btn-info btn card-btn" id='+item.name+' onclick="updateFunc(this)"> Update </button> </div>';
 		});
 	}
 
@@ -255,9 +289,8 @@ function loadItems(){
    	document.getElementById("items-div").style.display = "block";
 	console.log("vge");
 	});
-
-	
 }
+
 function snapshotToArray(snapshot) {
     var returnArr = [];
 
@@ -309,7 +342,7 @@ function loadItems(){
 	data = data.filter(filtering);
 	if 
 	data.forEach(function(item){
-	  itemsCard += '<div class="card-div"> <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn"> View history </button> <button class="btn-info btn card-btn"> Update </button> </div>';
+	  itemsCard += '<div class="card-div"> <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn view-history-btn" id="view-history-btn"> View history </button> <button class="btn-info btn card-btn"> Update </button> </div>';
 
 	});
 	var container = document.getElementById("items-div");
@@ -415,7 +448,6 @@ $(document).on("change", "input[type=radio][name='categories']", function(event)
 	var userId = firebase.auth().currentUser.uid;
 	//loadJSONdata();
 	loadItems();
-
 });
 $(document).on("change", "input[type=radio][name='alphabetical']", function(event){
 	setOrder = "name";
@@ -454,3 +486,6 @@ function filtering(element) {
 	var regex = new RegExp( searchQueryInventory, 'gi' );
     return element['name'].match(regex);
 }
+
+
+
