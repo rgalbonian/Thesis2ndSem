@@ -30,9 +30,9 @@ function inventory(){
 	var uid = user.uid
 	
 		
-	var usersRef = firebase.database().ref("0/users/" + uid);
+	var usersRef = firebase.database().ref("users/" + uid);
 	var userId = firebase.auth().currentUser.uid;
-	firebase.database().ref('0/users/' + userId).once('value').then(function(snapshot) {
+	firebase.database().ref('users/' + userId).once('value').then(function(snapshot) {
 	  	lab = (snapshot.val() && snapshot.val().laboratory) || 'Anonymous';
   		console.log(lab)
   		filterTab()
@@ -46,8 +46,8 @@ function inventory(){
 function viewHistoryFunc(card) {
 	console.log(card.id);
 	var myitem = card.id;
-	var chemistryDataRef = firebase.database().ref("2/" + lab);
-	chemistryDataRef.child("chemicals").child(""+filterCat).orderByChild("name").equalTo(myitem).once("value").then(function(snapshot) {
+	var chemistryDataRef = firebase.database().ref(""+ lab);
+	chemistryDataRef.child(""+filterCat).orderByChild("itemID").equalTo(myitem).once("value").then(function(snapshot) {
 		snapshot.forEach(function(childSnapshot) {
 	        $("#hist-name").html("Item Name: "+ childSnapshot.val().name);
     		$("#hist-cat").html("Category: " + childSnapshot.val().category);
@@ -57,13 +57,38 @@ function viewHistoryFunc(card) {
 }
 
 function updateFunc(card) {
-	console.log(card.id);
-	var myitem = card.id;
-	var chemistryDataRef = firebase.database().ref("2/" + lab);
-	chemistryDataRef.child("chemicals").child(""+filterCat).orderByChild("name").equalTo(myitem).once("value").then(function(snapshot) {
+	console.log(card.id +filterCat);
+	var myitem = parseInt(card.id);
+	var chemistryDataRef = firebase.database().ref(""+lab);
+
+	chemistryDataRef.child(""+filterCat).orderByChild("itemID").equalTo(myitem).once("value").then(function(snapshot) {
 		snapshot.forEach(function(childSnapshot) {
-	        $("#update-name").html("Item Name: "+ childSnapshot.val().name);
+			console.log(childSnapshot.val().name);
+			$("#update-name").attr("placeholder",childSnapshot.val().name );
+	        //$("#update-name").html("Item Name: "+ childSnapshot.val().name);
     		$("#update-cat").html("Category: " + childSnapshot.val().category);
+
+    		if (filterCat == 'apparatus'){
+    			$("#update-amount").attr("style","display:none");
+    			$("#update-unit").attr("style","display:none");
+    			$("#text-amount").html("");
+    			$("#text-unit").html("");
+
+    			$("#update-quan").attr("style","display:inline");
+    			$("#text-quan").html("Quantity: ");
+ 				$("#update-quan").attr("placeholder",childSnapshot.val().quantity );
+    			
+    		}else{
+    			$("#update-quan").attr("style","display:none");
+    			$("#text-quan").html("");
+    			$("#update-amount").attr("style","display:inline");
+    			$("#update-unit").attr("style","display:inline");
+
+    			$("#text-amount").html("Amount: ");
+    			$("#text-unit").html("Unit: ");
+  				$("#update-amount").attr("placeholder",childSnapshot.val().amount );   			
+  				$("#update-unit").attr("placeholder",childSnapshot.val().unit );   			
+    		}
     	}); 
 	});
 	$('#item-update-modal').modal('show');
@@ -122,7 +147,7 @@ $(document).on("click", "#modal-confirm-summary-btn", function(event){
 
     if (category == "apparatus"){
     	var quantity = $("#item-quantity").val()
-    	var chemicalsRef = firebase.database().ref("2/" + lab + "/" + "chemicals" +"/" + category);
+    	var chemicalsRef = firebase.database().ref("" + lab  +"/" + category);
 	
 		var addChemicals = chemicalsRef.push({
 	 	name: name,
@@ -135,7 +160,7 @@ $(document).on("click", "#modal-confirm-summary-btn", function(event){
     	
     	var amount = $("#item-amount").val()
       	var unit = $("#item-unit").val()
-    	var chemicalsRef = firebase.database().ref("2/" + lab + "/" + "chemicals" +"/" + category);
+    	var chemicalsRef = firebase.database().ref("" + lab  +"/" + category);
 	
 		var addChemicals = chemicalsRef.push({
 	 	name: name,
@@ -251,8 +276,8 @@ function loadItems(){
 	
 	var itemsCard = "";
 	//connect to db and get elements
-	var chemistryDataRef = firebase.database().ref("2/" + lab);
-	chemistryDataRef.child("chemicals").child(""+filterCat).orderByChild(setOrder).once("value").then(function(snapshot) {
+	var chemistryDataRef = firebase.database().ref("" + lab);
+	chemistryDataRef.child(""+filterCat).orderByChild(setOrder).once("value").then(function(snapshot) {
 	//convert object to array
 	var data = snapshotToArray(snapshot);
 	//filter data, you can edit filtering() function (i mean create your own para indi maoverridae) depende sa need mo kung pano magfilter
@@ -274,11 +299,11 @@ function loadItems(){
 	if (filterCat == "metal" || filterCat == "nonmetal"){
 		data.forEach(function(item){
 			console.log("item id" +item.id)
-		  itemsCard += '<div class="card-div"  > <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit: ' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn view-history-btn" id='+item.name+' onclick="viewHistoryFunc(this)"> View history </button> <button class="btn-info btn card-btn" id='+item.name+' onclick="updateFunc(this)"> Update </button> </div>';
+		  itemsCard += '<div class="card-div"  > <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit: ' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn view-history-btn" id='+item.itemID+' onclick="viewHistoryFunc(this)"> View history </button> <button class="btn-info btn card-btn" id='+item.itemID+' onclick="updateFunc(this)"> Update </button> </div>';
 		});
 	}else {
 		data.forEach(function(item){
-		  itemsCard += '<div class="card-div" > <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Quantity: '+item.quantity+'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn"  id='+item.name+' onclick="viewHistoryFunc(this)"> View history </button> <button class="btn-info btn card-btn" id='+item.name+' onclick="updateFunc(this)"> Update </button> </div>';
+		  itemsCard += '<div class="card-div" > <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Quantity: '+item.quantity+'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn"  id='+item.itemID+' onclick="viewHistoryFunc(this)"> View history </button> <button class="btn-info btn card-btn" id='+item.itemID+' onclick="updateFunc(this)"> Update </button> </div>';
 		});
 	}
 
@@ -356,7 +381,7 @@ function loadItems(){
 function getApparatus(){
 	console.log("getting apparatus", filterCat, setOrder,searchQueryInventory)
 	var itemsCard = "";
-	var chemistryDataRef = firebase.database().ref("2/" + lab);
+	var chemistryDataRef = firebase.database().ref("" + lab);
 	chemistryDataRef.child("chemicals").child(""+filterCat).limitToFirst(10).orderByChild(setOrder).once("value").then(function(snapshot) {
 
 	var data = snapshotToArray(snapshot);
@@ -444,7 +469,7 @@ $(document).on("change", "input[type=radio][name='categories']", function(event)
 	var user = firebase.auth().currentUser;
 	var uid = user.uid
 
-	var usersRef = firebase.database().ref("0/users/" + uid);
+	var usersRef = firebase.database().ref("users/" + uid);
 	var userId = firebase.auth().currentUser.uid;
 	//loadJSONdata();
 	loadItems();
