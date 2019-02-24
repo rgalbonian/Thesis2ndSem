@@ -5,15 +5,19 @@ body{
 .login{
 	margin-top: 100px;
 	width: 500px;
-	background-color: #F5F6F1;
+  background-color: #F5F6F1;
 }
 
 /* tab menu */
+.request_header{
+  padding-top: 20px;
+}
 @import url(http://fonts.googleapis.com/css?family=Raleway);
 #tabmenu,
 #tabmenu ul,
 #tabmenu ul li,
 #tabmenu ul li a {
+  color: white;
   margin: 0;
   padding: 0;
   border: 0;
@@ -24,6 +28,7 @@ body{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
+
 }
 #tabmenu:after,
 #tabmenu > ul:after {
@@ -33,19 +38,24 @@ body{
   visibility: hidden;
   line-height: 0;
   height: 0;
+
 }
 #tabmenu {
   width: auto;
-  border-bottom: 3px solid #47c9af;
+  border-bottom: 3px solid #b29ca0;/*#47c9af;*/
   font-family: Raleway, sans-serif;
   line-height: 1;
 }
 #tabmenu ul {
-  background: #ffffff;
+  background-color: #32353c;
 }
-#tabmenu > ul > li {
+.floatLeft{
   float: left;
 }
+#logoutBtn{
+  float: right;
+}
+
 #tabmenu.align-center > ul {
   font-size: 0;
   text-align: center;
@@ -60,14 +70,15 @@ body{
 #tabmenu.align-right > ul > li > a {
   margin-right: 0;
   margin-left: -4px;
+
 }
 #tabmenu > ul > li > a {
   z-index: 2;
   padding: 18px 25px 12px 25px;
   font-size: 15px;
-  font-weight: 400;
+  font-weight: 700;
   text-decoration: none;
-  color: #444444;
+  color: #898a8e;
   -webkit-transition: all .2s ease;
   -moz-transition: all .2s ease;
   -ms-transition: all .2s ease;
@@ -78,7 +89,8 @@ body{
 #tabmenu > ul > li.active > a,
 #tabmenu > ul > li:hover > a,
 #tabmenu > ul > li > a:hover {
-  color: #ffffff;
+  color: #898a8e;
+  font-weight: 700;
 }
 #tabmenu > ul > li > a:after {
   position: absolute;
@@ -100,11 +112,12 @@ body{
   -moz-transform-origin: bottom;
   transform: perspective(5px) rotateX(2deg);
   transform-origin: bottom;
+
 }
 #tabmenu > ul > li.active > a:after,
 #tabmenu > ul > li:hover > a:after,
 #tabmenu > ul > li > a:hover:after {
-  background: #47c9af;
+  background: white;/*#47c9af;*/
 }
 
 
