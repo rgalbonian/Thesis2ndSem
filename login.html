@@ -32,29 +32,11 @@
 		</div>
 		<div id="tabmenu" style="display:none">
 			<ul>
-			   <li id="request" class='active' onclick="request()"><a href='#'>Request</a></li>
-			   <li id="inventory" onclick="inventory()"><a href='#' >Inventory</a></li>
-			   <li id="history" onclick="history()"><a href='#' >History</a></li>
-			   <li id="accountability"  onclick="accountability()"><a href='#'>Accountability</a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" onclick="logout()"></a></li>
-			   <li><a id="logoutBtn" class="extralog" onclick="logout()">Logout</a></li>
+			   <li id="request" class='floatLeft active' onclick="request()"><a href='#'><i class="fas fa-home"></i>Request</a></li>
+			   <li id="inventory" class='floatLeft' onclick="inventory()"><a href='#' >Inventory</a></li>
+			   <li id="history" class='floatLeft' onclick="history()"><a href='#' >History</a></li>
+			   <li id="accountability"  class='floatLeft' onclick="accountability()"><a href='#'>Accountability</a></li>
+			   <li><a id="logoutBtn" onclick="logout()" href="#">Logout</a></li>
 			</ul>
 		</div>
 
@@ -93,44 +75,14 @@
 				  </div>
 				</nav>
 				</div>
-
+				<!--pending-->
+				    <div id="pending_div" style="display:none" >
+					<div class="items-div-pcd" id="items-div-pcd">
+					<!--pending request cards go here-->
+					 </div>
+				    </div>
 			    </div>
-			    <!--pending-->
-			 	
-			    <div id="pending_div" style="display:none" >
-			    	<div class="items-div-pcd" id="items-div-pcd">
-			    		<div class="card-div-pending dbl rounded" data-target="#more">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button type="button" class="btn btn-info btn card-btn" id="declineMain"> Decline </button>
-			    			<button class="btn btn card-btn" id="reqAdd"> Process </button>
-			    		</div>
-			    		<div class="card-div-pending dbl rounded" data-target="#more">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button type="button" class="btn btn-info btn card-btn" id="declineMain"> Decline </button>
-			    			<button class="btn btn card-btn"> Process </button>
-			    		</div>
-			    		<div class="card-div-pending dbl rounded" data-target="#more">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button type="button" class="btn btn-info btn card-btn" id="declineMain"> Decline </button>
-			    			<button class="btn btn card-btn"> Process </button>
-			    		</div>
-			    	</div>
-			    </div>
+			    
 
 				<!--Confirmation Modal-->
 				<div class="modal" id="confirmModal" role="dialog">
