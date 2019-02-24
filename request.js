@@ -31,6 +31,27 @@ function open_pending_tab(){
 	document.getElementById("completed_div").style.display="none";
 	document.getElementById("processing_div").style.display="none";
 	document.getElementById("declined_div").style.display="none";
+
+	//connect to db and get pending requests based on laboratory
+	//assume lab =  chemistry for now
+	var lab = "chemistry";
+	var database = firebase.database().ref(lab + "/request");
+	
+	//display pending requests
+	database.on('child_added',function(snapshot){
+		var data = snapshotToArray(snapshot);
+		console.log(data)
+		var status = data[6];
+		if(status.toLowerCase() == "pending"){
+			var items = data[1];
+			var requestId = data[3];
+			var requestNeeded = data[4];
+			var requestSent = data[5];
+			var requestorId = data[7];
+			var container = document.getElementById('items-div-pcd');
+			container.innerHTML += '<div class="card-div-pending rounded" id="'+requestId+'"onclick="seeMoreRequest(this)"><span class="card status">'+ status + '</span><span class="card request-number">Request Number: '+requestId+'</span><span class="card request-sent">Request Sent:'+requestSent+'</span><span class="card request-needed">Request Needed:'+requestNeeded+'</span><span class="card request-requestor">Requestor Name:'+requestorId+'</span><span class="card request-items">Items:'+items+'</span><button type="button" class="btn btn-info btn card-btn" id="declineMain"> Decline </button><button class="btn btn card-btn" id="reqAdd"> Process </button></div>';
+		}
+	})
 }
 
 function open_processing_tab(){
@@ -74,9 +95,14 @@ function open_completed_tab(){
 }
 
 //double clicking to see more of the request
-$('.dbl').on('dblclick',function () {
+function seeMoreRequest(request){
+	console.log(request.id);
+	$('#seeMore').modal('show');
+
+}
+/*$('.dbl').on('dblclick',function () {
 	$('#more').modal('toggle');
-})
+})*/
 
 //
 $('.dblProcessing').on('dblclick',function () {
