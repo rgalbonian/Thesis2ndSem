@@ -8,6 +8,12 @@ var namedir = "az"
 var quandir = "asc";
 var reverseData = false;
 var validateCheck = false;
+var updateThisItem = "";
+	var newName = "";
+	var newQuan = "";
+	var newAmount = "";
+	var newUnit = "";
+	var newitemID = "";
 function inventory(){
 	clearInterval(accountabilityloading);
 	clearInterval(historyloading);
@@ -44,7 +50,7 @@ function inventory(){
 
 
 function viewHistoryFunc(card) {
-	console.log(card.id);
+	
 	var myitem = card.id;
 	var chemistryDataRef = firebase.database().ref(""+ lab);
 	chemistryDataRef.child(""+filterCat).orderByChild("itemID").equalTo(myitem).once("value").then(function(snapshot) {
@@ -58,17 +64,23 @@ function viewHistoryFunc(card) {
 
 function updateFunc(card) {
 	console.log(card.id +filterCat);
-	var myitem = parseInt(card.id);
+	var myitem = card.id;
+
 	var chemistryDataRef = firebase.database().ref(""+lab);
 
 	chemistryDataRef.child(""+filterCat).orderByChild("itemID").equalTo(myitem).once("value").then(function(snapshot) {
 		snapshot.forEach(function(childSnapshot) {
+
+			updateThisItem = childSnapshot.key;
 			console.log(childSnapshot.val().name);
 			$("#update-name").attr("placeholder",childSnapshot.val().name );
 	        //$("#update-name").html("Item Name: "+ childSnapshot.val().name);
-    		$("#update-cat").html("Category: " + childSnapshot.val().category);
-
+    		$("#update-cat").val(filterCat);
+    		newName = childSnapshot.val().name;
+    		newitemID = childSnapshot.val().itemID;
     		if (filterCat == 'apparatus'){
+    			
+				newQuan = childSnapshot.val().quantity;
     			$("#update-amount").attr("style","display:none");
     			$("#update-unit").attr("style","display:none");
     			$("#text-amount").html("");
@@ -79,6 +91,8 @@ function updateFunc(card) {
  				$("#update-quan").attr("placeholder",childSnapshot.val().quantity );
     			
     		}else{
+				newAmount = childSnapshot.val().amount;
+				newUnit = childSnapshot.val().unit;
     			$("#update-quan").attr("style","display:none");
     			$("#text-quan").html("");
     			$("#update-amount").attr("style","display:inline");
@@ -92,6 +106,7 @@ function updateFunc(card) {
     	}); 
 	});
 	$('#item-update-modal').modal('show');
+
 }
 
 $(document).on("change", "input[type=radio][name='itemCat']", function(event){
@@ -118,12 +133,49 @@ $( "#searchInventory").click(function() {
 	//loadJSONdata()
 	loadItems();
 });
-$( "modal-confirm-update-btn").click(function() {
+
+function confirmUpdate(){
 	$('#item-update-modal').modal('hide');
-	$('#alertModal').modal('show')
-	alert("huhu");
-	console.log("huhu")
-});
+	$('#alertModal').modal('show');
+
+	var updateKey = firebase.database().ref("" + lab + "/" + filterCat).push().key;
+	if ($("#update-name").val() != ""){
+		newName = $("#update-name").val();
+	}
+	if ($("#update-quan").val() != ""){
+		newQuan = $("#update-quan").val();
+	}
+	if ($("#update-unit").val() != ""){
+		newUnit = $("#update-unit").val();
+	}
+	if ($("#update-amount").val() != ""){
+		newAmount = $("#update-amount").val();
+	}
+	if (filterCat == "apparatus"){
+		var newData = {
+          "category" : "apparatus",
+          "itemID" : newitemID,
+          "image" : "http://dummyimage.com/139x155.bmp/cc0000/ffffff",
+          "name" : newName,
+          "quantity" : newQuan
+      }
+	}else{
+		var newData = {
+          "category" : filterCat,
+          "itemID" : newitemID,
+          "image" : "http://dummyimage.com/139x155.bmp/cc0000/ffffff",
+          "name" : newName,
+          "amount" : newAmount,
+          "unit" : newUnit
+      }
+	}
+	console.log(updateThisItem);
+	var updates = {}
+	updates[""+lab+"/"+	filterCat + "/" + updateThisItem] = newData;
+	firebase.database().ref().update(updates);
+	console.log(newName + newQuan + newAmount + newUnit);
+	loadItems();
+}
 
 $( "#view-in-list").click(function() {
 	window.open('inventory-list.html', '_blank')
@@ -298,7 +350,6 @@ function loadItems(){
 	//use data.forEach for iterate sa data
 	if (filterCat == "metal" || filterCat == "nonmetal"){
 		data.forEach(function(item){
-			console.log("item id" +item.id)
 		  itemsCard += '<div class="card-div"  > <span class="card item">Item Name: '+ item.name+'</span> <span class="card unit">Amount: '+item.amount+ ' Unit: ' + item.unit +'</span> <span class="card cat">Category: '+item.category+'</span> <button class="btn-info btn card-btn view-history-btn" id='+item.itemID+' onclick="viewHistoryFunc(this)"> View history </button> <button class="btn-info btn card-btn" id='+item.itemID+' onclick="updateFunc(this)"> Update </button> </div>';
 		});
 	}else {
