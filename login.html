@@ -371,6 +371,307 @@
 								        	</div>
 							        	</form>
 							    	</div>
+<!--request-->
+		<div id="cont">
+			<div id="request_div" class="request_div" style="display:none">
+			    <div id="request_header" class="request_header" >
+			    
+				    <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+				      <li class="nav-item ">
+				        <a class="nav-link active" id="pending_tab" onclick="open_pending_tab()" data-toggle="pill" href="#" role="tab" aria-controls="pills-home" aria-selected="true">Pending</a>
+				      </li>
+				      <li class="nav-item">
+				        <a class="nav-link" id="processing_tab" data-toggle="pill" onclick="open_processing_tab()" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Processing</a>
+				      </li>
+				      <li class="nav-item">
+				        <a class="nav-link" id="declined_tab" data-toggle="pill" 
+				        onclick="open_declined_tab()" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Declined</a>
+				      </li>
+				      <li class="nav-item">
+				        <a class="nav-link" id="completed_tab" onclick="open_completed_tab()"
+				        data-toggle="pill" href="#pills-contact" role="tab" aria-controls="pills-contact" aria-selected="false">Completed</a>
+				      </li>
+				    </ul>			    
+				</div>
+			    <!--pending-->
+			    <div id="pending_div" style="display:none" >
+			    	<div class="items-div-pcd" id="pending-items-div-pcd">
+			    	
+				    </div>
+			    </div>
+			    <!--processing-->
+			    <div id="processing_div" style="display:none">
+			    	<!--filter-->		    	
+				    <div class="filter-div">
+				   		<div class="cat-div">
+					        Urgency
+						        <br>
+						        <input type=radio name="urgency" value="nearest">Nearest to Requirement Date</input><br>
+						        <input type=radio name="urgency" value="farthest">Farthest to Requirement Date</input>
+						        <hr>
+					        Status 
+						        <br>
+						        <input type=radio name="status" value="preparing"> Preparing </input> <br>
+						        <input type=radio name="status" value="ready"> Ready </input> <br>
+						        <input type=radio name="status" value="released"> Released </input> <br>
+						        <input type=radio name="status" value="defective"> Defective 3</input>
+						        <hr>
+					        
+					        <button id="filter-btn" class="filter-btn">Apply Now</button>
+				    	</div>
+				    </div>
+				    <div class="items-div-pcd" id="processing-items-div-pcd">
+			    		<!-- <div class="card-div-pending dblProcessing rounded" data-target="#moreProcessing">
+			    			<span class="card status">Status</span>
+			    			<span class="card request-number">Request Number:</span>
+			    			<span class="card request-sent">Request Sent:</span>
+			    			<span class="card request-needed">Request Needed:</span>
+			    			<span class="card request-requestor">Requestor Name:</span>
+			    			<span class="card request-items">Items:</span>
+			    			<button class="btn btn card-btn" onclick="update_status()" id="reqAdd" data-toggle="modal" data-target="#updateModal"> Update </button>
+			    		</div>-->
+			    	</div>
+			    </div>
+			</div>
+			 	
+
+				<!--Confirmation Modal-->
+				<div class="modal" id="confirmModal" role="dialog">
+					<div class="modal-dialog">
+				    
+				    	<!-- Decline Model Content -->
+					    <div class="modal-content">
+					    	<div class="modal-header">
+					        	<h4 class="modal-title" id="confirm-text"></h4>
+					        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+					        </div>
+					        <div class="modal-body">
+					        	<form>
+					        		<div class="form-group">
+						        		<label for = "decline-reason" class = "col-form-label">Are you sure?</label>
+						        	</div>
+					        	</form>
+					        </div>
+					        
+					        <div class="modal-footer">
+					        	<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelConfirm">Cancel</button>
+					        	<button type="button" class="btn btn-primary" id="confirmStatusChange" onclick="" name="" data-dismiss="modal">Confirm</button>
+					    	</div>
+					    </div>
+				    
+					</div>
+				</div>
+
+				<!--See More of Request Modal-->
+				<div class="modal fade" id="seeMore" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">Request Number</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        <span id="modal-status" class="card status">Status</span>
+			    		<span id="modal-request-number" class="card request-number">Request Number:</span>
+			    		<span id="modal-request-sent" class="card request-sent">Request Sent:</span>
+			    		<span id="modal-request-needed" class="card request-needed">Request Needed:</span>
+			    		<span id="modal-userid" class="card request-requestor">Requestor Name:</span>
+			    		<span id="modal-items" class="card request-items">Items:</span>
+				      </div>
+				      <div class="modal-footer">
+			    		<button class="btn btn card-btn" data-dismiss="modal"> Close </button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+				<!--View History Modal-->
+				<div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">History of Request Number</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				     	 <table class="table table-striped">
+						  <tbody>
+						    <tr>
+						      <td width="30%">09-28-18<br>02:03PM</td>
+						      <td>Request sent.</td>	      
+						    </tr>
+						    <tr>
+						      <td>09-28-18<br>02:05PM</td>
+						      <td>Request viewed by STAFF NAME.</td>	     
+						    </tr>
+						    <tr>
+						      <td>09-28-18<br>02:10PM</td>
+						      <td>Request edited.</td>	      
+						    </tr>
+						    <tr>
+						      <td>09-28-18<br>02:30PM</td>
+						      <td>Request updated to PROCESSING by STAFF NAME.</td>	      
+						    </tr>
+						    <tr>
+						      <td>09-29-18<br>08:15AM</td>
+						      <td>Request updated to READY by STAFF NAME.</td>	      
+						    </tr>
+						    <tr>
+						      <td>09-29-18<br>01:00PM</td>
+						      <td>Request updated to RELEASED to NAME by STAFF NAME.</td>	      
+						    </tr>
+						    <tr>
+						      <td>09-29-18<br>02:23PM</td>
+						      <td>Request updated to COMPLETE received by STAFF NAME.</td>	      
+						    </tr>
+						  </tbody>
+						</table>
+				      </div>
+				      <div class="modal-footer">
+			    		<button type="button" class="btn btn-info btn card-btn" data-toggle="modal" data-dismiss="modal"> Close </button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+			    
+			    <!--See More of Request Modal but for Processing-->
+				<div class="modal fade" id="moreProcessing" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				  <div class="modal-dialog" role="document">
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h5 class="modal-title" id="exampleModalLongTitle">Request Number</h5>
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+				          <span aria-hidden="true">&times;</span>
+				        </button>
+				      </div>
+				      <div class="modal-body">
+				        <span class="card status">Status</span>
+			    		<span class="card request-number">Request Number:</span>
+			    		<span class="card request-sent">Request Sent:</span>
+			    		<span class="card request-needed">Request Needed:</span>
+			    		<span class="card request-requestor">Requestor Name:</span>
+			    		<span class="card request-items">Items:</span>
+				      </div>
+				      <div class="modal-footer">
+			    		<button type="button" class="btn btn-info btn card-btn" data-toggle="modal" data-target="#declineModal"> Decline </button>
+			    		<button class="btn btn card-btn" onclick="update_status()" data-toggle="modal" data-target="#updateModal" data-dismiss="modal"> Update </button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			    <!-- Update Modal -->
+				<div class="modal fade" id="updateModal" role="dialog">
+					<div class="modal-dialog">
+				    
+				    	<!-- Decline Model Content -->
+					    <div class="modal-content">
+					    	<div class="modal-header">
+					        	<h4 class="modal-title">Update Request</h4>
+					        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+					        </div>
+					        <div class="modal-body">
+					        	<span id="statusSpan"><h4>Status</h4></span>
+						        <!-- <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+							      <!-- <span id="chosenStatus"> Preparing </span>  Preparing <span class="caret"></span>
+							    </button>-->
+							    <select onclick="update_status()" class="form-control" id="statusUpdate">
+								  <option>Preparing</option>
+								  <option>Ready</option>
+								  <option>Released</option>
+								  <option>Defective</option>
+								  <option>OK</option>
+								  <option>Declined</option>
+								</select>
+							    
+							    <br>
+							    <div id="updateModalContent">
+							    	<div id="releasedContent">
+							    	<span id="releaseConfirmUpdate" value="true" hidden></span>
+							    		<div class="form-check">
+									      <label class="form-check-label" for="radio1">
+									        <input type="radio" onclick="notOther()" class="form-check-input" id="radio1" name="optradio" value="option1" checked>Requestor
+									      </label>
+									    </div>
+									    <div class="form-check">
+									      <label class="form-check-label" for="radio2">
+									        <input type="radio" onclick="notOther()" class="form-check-input" id="radio2" name="optradio" value="option2">Authorized by Requestor
+									      </label>
+									    </div>
+									    <div class="form-check">
+									      <label class="form-check-label" for="radio3">
+									        <input type="radio" class="form-check-input" id="radio3" name="optradio" value="option3">Other <span id="studentIdWarning" style="color:red"></span>
+									        <input type="text" onfocus="releasedOtherCheck()" oninput="releasedOtherCheck()" class="form-control" id="student_id" placeholder="20XX-XXXX">
+									      </label>
+									    </div>
+							    	</div>
+							    	<div id="defectiveContent">
+							    		<span id="releaseConfirmDefective" value="true" hidden></span>
+							    		<h4>Item Status</h4>
+							    		<table id="defectiveTable" class="table table-borderless">
+							    		<span id="defectiveTableWarning" style="color:red"></span>
+									    <thead>
+									      <tr>
+									        <th width="45%"><center>Item Name</center></th>
+									        <th width="5%"><center>Quantity</center></th>
+									        <th width="35%"><center>Status</center></th>
+									        <th width="5%"><center> </center></th>
+									      </tr>
+									    </thead>
+									    <tbody>
+									    <span id="moreItems">
+									    	<tr>
+									    	<td>
+									    		<select class="form-control">
+												  <option>Item 1</option>
+												  <option>Item 2</option>
+												  <option>Item 3</option>
+												  <option>Item 4</option>
+												  <option>Item 5</option>
+												</select>
+											</td>
+									    	<td>
+									    		<select class="form-control">
+												  <option>1</option>
+												  <option>2</option>
+												  <option>3</option>
+												  <option>4</option>
+												  <option>5</option>
+												</select>
+											</td>
+											<td>
+												<div class="form-check-inline">
+												  <label class="form-check-label">
+												    <input type="radio" class="form-check-input" name="optradio">Missing
+												  </label>
+												</div>
+												<div class="form-check-inline">
+												  <label class="form-check-label">
+												    <input type="radio" class="form-check-input" name="optradio">Defective
+												  </label>
+												</div>
+											</td>
+											<td><center>
+												<button id="1" onclick="defectiveDeleteItem(id)" class="btn-light btn">X</button></center>
+											</td>
+											</tr>
+											</span>
+									    </tbody>
+									    </table>
+									    <button type="button" class="btn btn-sm btn-primary">
+										<span id="chosenStatus" onclick="defectiveAddItem()"> + More Items </span>
+										</button>
+										<form>
+							        		<div class="form-group">
+								        		<label for = "decline-reason" class = "col-form-label">Comments:</label>
+								        		<textarea class="form-control" id="message-text"></textarea>
+								        	</div>
+							        	</form>
+							    	</div>
 							    	<div id="declinedContent">
 							    		<span id="releaseConfirmDeclined" value="false" hidden></span>
 							    		<form>
@@ -400,27 +701,8 @@
 
 			    <!--declined-->
 			    <div id="declined_div" style="display:none">
-			    	<div class="items-div-pcd" id="items-div-pcd">
-			    		<div class="card-div-pending dbl rounded">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button class="btn btn card-btn" data-toggle="modal" data-target="#viewHistoryModal"> View History </button>
-			    			<button class="btn btn card-btn"> Move to Pending </button>
-			    		</div>
-			    		<div class="card-div-pending dbl rounded">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button class="btn btn card-btn" data-toggle="modal" data-target="#viewHistoryModal"> View History </button>
-			    			<button class="btn btn card-btn"> Move to Pending </button>
-			    		</div>
+			    	<div class="items-div-pcd" id="declined-items-div-pcd">
+			    		<!--
 			    		<div class="card-div-pending dbl rounded">
 			    			<span class="card status">Status</span>
 			    			<span class="card request-number">Request Number:</span>
@@ -430,13 +712,13 @@
 			    			<span class="card request-items">Items:</span>
 			    			<button class="btn card-btn" data-toggle="modal" data-target="#viewHistoryModal"> View History </button>
 			    			<button class="btn card-btn"> Move to Pending </button>
-			    		</div>
+			    		</div> -->
 			    	</div>
 			    </div>
 			    <!--completed-->
 			    <div id="completed_div" style="display:none">
-			    	<div class="items-div-pcd" id="items-div-pcd">
-			    		<div class="card-div-pending dbl rounded">
+			    	<div class="items-div-pcd" id="completed-items-div-pcd">
+			    <!-- 		<div class="card-div-pending dbl rounded">
 			    			<span class="card status">Status</span>
 			    			<span class="card request-number">Request Number:</span>
 			    			<span class="card request-sent">Request Sent:</span>
@@ -444,25 +726,7 @@
 			    			<span class="card request-requestor">Requestor Name:</span>
 			    			<span class="card request-items">Items:</span>
 			    			<button class="btn card-btn" data-toggle="modal" data-target="#viewHistoryModal"> View History </button>
-			    		</div>
-			    		<div class="card-div-pending dbl rounded">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button class="btn card-btn" data-toggle="modal" data-target="#viewHistoryModal"> View History </button>
-			    		</div>
-			    		<div class="card-div-pending dbl rounded">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button class="btn card-btn" data-toggle="modal" data-target="#viewHistoryModal"> View History </button>
-			    		</div>
+			    		</div> -->
 			    	</div>
 			    </div>
 			 </div>
