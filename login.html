@@ -5,29 +5,29 @@
 		<link rel="stylesheet" href="accountability.css" type="text/css" charset="utf-8" />
 		<link rel="stylesheet" href="history.css" type="text/css" charset="utf-8" />
 		<link rel="stylesheet" href="inventory.css" type="text/css" charset="utf-8" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link href="/mywebsitefolder/fontawesome/fontawesome-all.css" rel="stylesheet">
   
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script src="https://www.gstatic.com/firebasejs/5.5.2/firebase.js"></script>
 		<script>
 		  // Initialize Firebase
-		  	var config = {
-			    apiKey: "AIzaSyAS0sFpZAeffhYaWKy7yrOegT5U4FtGX0A",
-			    authDomain: "liarsproject.firebaseapp.com",
-			    databaseURL: "https://liarsproject.firebaseio.com",
-			    projectId: "liarsproject",
-			    storageBucket: "liarsproject.appspot.com",
-			    messagingSenderId: "497341972181"
-					  };
-			firebase.initializeApp(config);
+		  var config = {
+		    apiKey: "AIzaSyBVmpJb26Kgsj6sOVBAJJYkaiQ1Bg8Whto",
+		    authDomain: "magraduateko.firebaseapp.com",
+		    databaseURL: "https://magraduateko.firebaseio.com",
+		    projectId: "magraduateko",
+		    storageBucket: "magraduateko.appspot.com",
+		    messagingSenderId: "823023783502"
+		  };
+		  firebase.initializeApp(config);
 		</script>
 	</header>
 	<body>
 		<div id="loader">
 			<center>
-				<img src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif">
+				<img style="width:20%" src="C:\Users\user\Desktop\farts\liars-2.gif">
 			</center>
 		</div>
 		<div id="tabmenu" style="display:none">
@@ -57,321 +57,6 @@
 		    <button onclick="login()">Submit</button>
 		</div>
 		<!--request-->
-		<div id="cont">
-			<div id="request_div" class="request_div" style="display:none">
-			    <div id="request_header" class="request_header" >
-			     <div style="max-width:365px;margin: 0 auto">
-			     <nav class="navbar navbar-expand navbar-light bg-light">
-				  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-				    <span class="navbar-toggler-icon"></span>
-				  </button>
-				  <div id="request_header" class="collapse navbar-collapse" id="navbarNavAltMarkup">
-				    <div class="navbar-nav">
-				      <a id="pending_tab" onclick="open_pending_tab()" class="nav-item nav-link active" href="#">Pending</a>
-				      <a id="processing_tab" onclick="open_processing_tab()" class="nav-item nav-link" href="#">Processing</a>
-				      <a id="declined_tab" onclick="open_declined_tab()" class="nav-item nav-link" href="#">Declined</a>
-				      <a id="completed_tab" onclick="open_completed_tab()" class="nav-item nav-link" href="#">Completed</a>
-				    </div>
-				  </div>
-				</nav>
-				</div>
-				<!--pending-->
-				    <div id="pending_div" style="display:none" >
-					<div class="items-div-pcd" id="items-div-pcd">
-
-					    </div>
-				    </div>
-				</div>
-			 	
-			    
-
-				<!--Confirmation Modal-->
-				<div class="modal" id="confirmModal" role="dialog">
-					<div class="modal-dialog">
-				    
-				    	<!-- Decline Model Content -->
-					    <div class="modal-content">
-					    	<div class="modal-header">
-					        	<h4 class="modal-title">Confirm</h4>
-					        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-					        </div>
-					        <div class="modal-body">
-					        	<form>
-					        		<div class="form-group">
-						        		<label for = "decline-reason" class = "col-form-label">Are you sure?</label>
-						        	</div>
-					        	</form>
-					        </div>
-					        
-					        <div class="modal-footer">
-					        	<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelConfirm">Cancel</button>
-					        	<button type="button" class="btn btn-primary" data-dismiss="modal">Confirm</button>
-					    	</div>
-					    </div>
-				    
-					</div>
-				</div>
-
-				<!--See More of Request Modal-->
-				<div class="modal fade" id="more" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLongTitle">Request Number</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body">
-				        <span class="card status">Status</span>
-			    		<span class="card request-number">Request Number:</span>
-			    		<span class="card request-sent">Request Sent:</span>
-			    		<span class="card request-needed">Request Needed:</span>
-			    		<span class="card request-requestor">Requestor Name:</span>
-			    		<span class="card request-items">Items:</span>
-				      </div>
-				      <div class="modal-footer">
-			    		<button class="btn btn card-btn" data-dismiss="modal"> Close </button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-				<!--View History Modal-->
-				<div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLongTitle">History of Request Number</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body">
-				     	 <table class="table table-striped">
-						  <tbody>
-						    <tr>
-						      <td width="30%">09-28-18<br>02:03PM</td>
-						      <td>Request sent.</td>	      
-						    </tr>
-						    <tr>
-						      <td>09-28-18<br>02:05PM</td>
-						      <td>Request viewed by STAFF NAME.</td>	     
-						    </tr>
-						    <tr>
-						      <td>09-28-18<br>02:10PM</td>
-						      <td>Request edited.</td>	      
-						    </tr>
-						    <tr>
-						      <td>09-28-18<br>02:30PM</td>
-						      <td>Request updated to PROCESSING by STAFF NAME.</td>	      
-						    </tr>
-						    <tr>
-						      <td>09-29-18<br>08:15AM</td>
-						      <td>Request updated to READY by STAFF NAME.</td>	      
-						    </tr>
-						    <tr>
-						      <td>09-29-18<br>01:00PM</td>
-						      <td>Request updated to RELEASED to NAME by STAFF NAME.</td>	      
-						    </tr>
-						    <tr>
-						      <td>09-29-18<br>02:23PM</td>
-						      <td>Request updated to COMPLETE received by STAFF NAME.</td>	      
-						    </tr>
-						  </tbody>
-						</table>
-				      </div>
-				      <div class="modal-footer">
-			    		<button type="button" class="btn btn-info btn card-btn" data-toggle="modal" data-dismiss="modal"> Close </button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-
-			    <!--processing-->
-			    <div id="processing_div" style="display:none">
-			    	<!--filter-->		    	
-				    <div class="filter-div">
-				   		<div class="cat-div">
-					        Urgency
-						        <br>
-						        <input type=radio name="urgency" value="nearest">Nearest to Requirement Date</input><br>
-						        <input type=radio name="urgency" value="farthest">Farthest to Requirement Date</input>
-						        <hr>
-					        Status 
-						        <br>
-						        <input type=radio name="status" value="preparing"> Preparing </input> <br>
-						        <input type=radio name="status" value="ready"> Ready </input> <br>
-						        <input type=radio name="status" value="released"> Released </input> <br>
-						        <input type=radio name="status" value="defective"> Defective 3</input>
-						        <hr>
-					        
-					        <button id="filter-btn" class="filter-btn">Apply Now</button>
-				    	</div>
-				    </div>
-				    <div class="items-div-pcd" id="items-div-pcd">
-			    		<div class="card-div-pending dblProcessing rounded" data-target="#moreProcessing">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button class="btn btn card-btn" onclick="update_status()" id="reqAdd" data-toggle="modal" data-target="#updateModal"> Update </button>
-			    		</div>
-			    		<div class="card-div-pending dblProcessing rounded" data-target="#moreProcessing">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button class="btn btn card-btn" onclick="update_status()" data-toggle="modal" data-target="#updateModal"> Update </button>
-			    		</div>
-			    		<div class="card-div-pending dblProcessing rounded" data-target="#moreProcessing">
-			    			<span class="card status">Status</span>
-			    			<span class="card request-number">Request Number:</span>
-			    			<span class="card request-sent">Request Sent:</span>
-			    			<span class="card request-needed">Request Needed:</span>
-			    			<span class="card request-requestor">Requestor Name:</span>
-			    			<span class="card request-items">Items:</span>
-			    			<button class="btn btn card-btn" onclick="update_status()" data-toggle="modal" data-target="#updateModal"> Update </button>
-			    		</div>
-			    	</div>
-			    </div>
-			    <!--See More of Request Modal but for Processing-->
-				<div class="modal fade" id="moreProcessing" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-				  <div class="modal-dialog" role="document">
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLongTitle">Request Number</h5>
-				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				          <span aria-hidden="true">&times;</span>
-				        </button>
-				      </div>
-				      <div class="modal-body">
-				        <span class="card status">Status</span>
-			    		<span class="card request-number">Request Number:</span>
-			    		<span class="card request-sent">Request Sent:</span>
-			    		<span class="card request-needed">Request Needed:</span>
-			    		<span class="card request-requestor">Requestor Name:</span>
-			    		<span class="card request-items">Items:</span>
-				      </div>
-				      <div class="modal-footer">
-			    		<button type="button" class="btn btn-info btn card-btn" data-toggle="modal" data-target="#declineModal"> Decline </button>
-			    		<button class="btn btn card-btn" onclick="update_status()" data-toggle="modal" data-target="#updateModal" data-dismiss="modal"> Update </button>
-				      </div>
-				    </div>
-				  </div>
-				</div>
-			    <!-- Update Modal -->
-				<div class="modal fade" id="updateModal" role="dialog">
-					<div class="modal-dialog">
-				    
-				    	<!-- Decline Model Content -->
-					    <div class="modal-content">
-					    	<div class="modal-header">
-					        	<h4 class="modal-title">Update Request</h4>
-					        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-					        </div>
-					        <div class="modal-body">
-					        	<span id="statusSpan"><h4>Status</h4></span>
-						        <!-- <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
-							      <!-- <span id="chosenStatus"> Preparing </span>  Preparing <span class="caret"></span>
-							    </button>-->
-							    <select onclick="update_status()" class="form-control" id="statusUpdate">
-								  <option>Preparing</option>
-								  <option>Ready</option>
-								  <option>Released</option>
-								  <option>Defective</option>
-								  <option>OK</option>
-								  <option>Declined</option>
-								</select>
-							    
-							    <br>
-							    <div id="updateModalContent">
-							    	<div id="releasedContent">
-							    	<span id="releaseConfirmUpdate" value="true" hidden></span>
-							    		<div class="form-check">
-									      <label class="form-check-label" for="radio1">
-									        <input type="radio" onclick="notOther()" class="form-check-input" id="radio1" name="optradio" value="option1" checked>Requestor
-									      </label>
-									    </div>
-									    <div class="form-check">
-									      <label class="form-check-label" for="radio2">
-									        <input type="radio" onclick="notOther()" class="form-check-input" id="radio2" name="optradio" value="option2">Authorized by Requestor
-									      </label>
-									    </div>
-									    <div class="form-check">
-									      <label class="form-check-label" for="radio3">
-									        <input type="radio" class="form-check-input" id="radio3" name="optradio" value="option3">Other <span id="studentIdWarning" style="color:red"></span>
-									        <input type="text" onfocus="releasedOtherCheck()" oninput="releasedOtherCheck()" class="form-control" id="student_id" placeholder="20XX-XXXX">
-									      </label>
-									    </div>
-							    	</div>
-							    	<div id="defectiveContent">
-							    		<span id="releaseConfirmDefective" value="true" hidden></span>
-							    		<h4>Item Status</h4>
-							    		<table id="defectiveTable" class="table table-borderless">
-							    		<span id="defectiveTableWarning" style="color:red"></span>
-									    <thead>
-									      <tr>
-									        <th width="45%"><center>Item Name</center></th>
-									        <th width="5%"><center>Quantity</center></th>
-									        <th width="35%"><center>Status</center></th>
-									        <th width="5%"><center> </center></th>
-									      </tr>
-									    </thead>
-									    <tbody>
-									    <span id="moreItems">
-									    	<tr>
-									    	<td>
-									    		<select class="form-control">
-												  <option>Item 1</option>
-												  <option>Item 2</option>
-												  <option>Item 3</option>
-												  <option>Item 4</option>
-												  <option>Item 5</option>
-												</select>
-											</td>
-									    	<td>
-									    		<select class="form-control">
-												  <option>1</option>
-												  <option>2</option>
-												  <option>3</option>
-												  <option>4</option>
-												  <option>5</option>
-												</select>
-											</td>
-											<td>
-												<div class="form-check-inline">
-												  <label class="form-check-label">
-												    <input type="radio" class="form-check-input" name="optradio">Missing
-												  </label>
-												</div>
-												<div class="form-check-inline">
-												  <label class="form-check-label">
-												    <input type="radio" class="form-check-input" name="optradio">Defective
-												  </label>
-												</div>
-											</td>
-											<td><center>
-												<button id="1" onclick="defectiveDeleteItem(id)" class="btn-light btn">X</button></center>
-											</td>
-											</tr>
-											</span>
-									    </tbody>
-									    </table>
-									    <button type="button" class="btn btn-sm btn-primary">
-										<span id="chosenStatus" onclick="defectiveAddItem()"> + More Items </span>
-										</button>
-										<form>
-							        		<div class="form-group">
-								        		<label for = "decline-reason" class = "col-form-label">Comments:</label>
-								        		<textarea class="form-control" id="message-text"></textarea>
-								        	</div>
-							        	</form>
-							    	</div>
-<!--request-->
 		<div id="cont">
 			<div id="request_div" class="request_div" style="display:none">
 			    <div id="request_header" class="request_header" >
@@ -439,7 +124,7 @@
 				<div class="modal" id="confirmModal" role="dialog">
 					<div class="modal-dialog">
 				    
-				    	<!-- Decline Model Content -->
+				    	<!-- Decline Modal Content -->
 					    <div class="modal-content">
 					    	<div class="modal-header">
 					        	<h4 class="modal-title" id="confirm-text"></h4>
@@ -463,11 +148,11 @@
 				</div>
 
 				<!--See More of Request Modal-->
-				<div class="modal fade" id="seeMore" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				<div class="modal fade" id="seeMore" tabindex="-1" role="dialog" aria-labelledby="seeMoreRequestModalTitle" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLongTitle">Request Number</h5>
+				        <h5 class="modal-title" id="seeMoreRequestModalTitle">Request Number</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -488,11 +173,11 @@
 				</div>
 
 				<!--View History Modal-->
-				<div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				<div class="modal fade" id="viewHistoryModal" tabindex="-1" role="dialog" aria-labelledby="viewHistoryModalTitle" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLongTitle">History of Request Number</h5>
+				        <h5 class="modal-title" id="viewHistoryModalTitle">History of Request Number</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -540,11 +225,11 @@
 
 			    
 			    <!--See More of Request Modal but for Processing-->
-				<div class="modal fade" id="moreProcessing" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+				<div class="modal fade" id="moreProcessing" tabindex="-1" role="dialog" aria-labelledby="seeMoreRequestModalProcessingTitle" aria-hidden="true">
 				  <div class="modal-dialog" role="document">
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h5 class="modal-title" id="exampleModalLongTitle">Request Number</h5>
+				        <h5 class="modal-title" id="seeMoreRequestModalProcessingTitle">Request Number</h5>
 				        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 				          <span aria-hidden="true">&times;</span>
 				        </button>
@@ -559,7 +244,7 @@
 				      </div>
 				      <div class="modal-footer">
 			    		<button type="button" class="btn btn-info btn card-btn" data-toggle="modal" data-target="#declineModal"> Decline </button>
-			    		<button class="btn btn card-btn" onclick="update_status()" data-toggle="modal" data-target="#updateModal" data-dismiss="modal"> Update </button>
+			    		<button class="btn btn card-btn" onclick="update_status(this)" data-toggle="modal" data-target="#updateModal" data-dismiss="modal"> Update </button>
 				      </div>
 				    </div>
 				  </div>
@@ -568,7 +253,7 @@
 				<div class="modal fade" id="updateModal" role="dialog">
 					<div class="modal-dialog">
 				    
-				    	<!-- Decline Model Content -->
+				    	<!-- Decline Modal Content -->
 					    <div class="modal-content">
 					    	<div class="modal-header">
 					        	<h4 class="modal-title">Update Request</h4>
@@ -579,7 +264,7 @@
 						        <!-- <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 							      <!-- <span id="chosenStatus"> Preparing </span>  Preparing <span class="caret"></span>
 							    </button>-->
-							    <select onclick="update_status()" class="form-control" id="statusUpdate">
+							    <select onclick="update_status(this)" class="form-control" id="statusUpdate">
 								  <option>Preparing</option>
 								  <option>Ready</option>
 								  <option>Released</option>
@@ -594,12 +279,12 @@
 							    	<span id="releaseConfirmUpdate" value="true" hidden></span>
 							    		<div class="form-check">
 									      <label class="form-check-label" for="radio1">
-									        <input type="radio" onclick="notOther()" class="form-check-input" id="radio1" name="optradio" value="option1" checked>Requestor
+									        <input type="radio" onclick="notOther('requestor')" class="form-check-input" id="radio1" name="optradio" value="option1" checked>Requestor
 									      </label>
 									    </div>
 									    <div class="form-check">
 									      <label class="form-check-label" for="radio2">
-									        <input type="radio" onclick="notOther()" class="form-check-input" id="radio2" name="optradio" value="option2">Authorized by Requestor
+									        <input type="radio" onclick="notOther('authorized')" class="form-check-input" id="radio2" name="optradio" value="option2">Authorized by Requestor
 									      </label>
 									    </div>
 									    <div class="form-check">
@@ -609,22 +294,27 @@
 									      </label>
 									    </div>
 							    	</div>
+							    	<div id="defectiveTitle" style="color:red;display:none" >No glassware to declare missing or defective</div>
 							    	<div id="defectiveContent">
+							    		<span id="maxItems" hidden></span>
 							    		<span id="releaseConfirmDefective" value="true" hidden></span>
-							    		<h4>Item Status</h4>
-							    		<table id="defectiveTable" class="table table-borderless">
+							    		<h4 style="float:left;padding-right:10%">Item Status</h4>
+										<span id="moreItemStatus" style="float:right"></span>
+										<table id="defectiveTable" class="table table-borderless">
 							    		<span id="defectiveTableWarning" style="color:red"></span>
 									    <thead>
-									      <tr>
-									        <th width="45%"><center>Item Name</center></th>
-									        <th width="5%"><center>Quantity</center></th>
-									        <th width="35%"><center>Status</center></th>
-									        <th width="5%"><center> </center></th>
-									      </tr>
+									      <span id="itemsheader" style="display:none">
+									      	<tr>
+										        <th width="93%"><center>Item Name</center></th>
+										        <th width="5%"><center>Quantity</center></th>
+										        <th width="1%"><center>Status</center></th>
+										        <th width="1%"><center> </center></th>
+										    </tr>
+										  </span>
 									    </thead>
 									    <tbody>
 									    <span id="moreItems">
-									    	<tr>
+									    	<!-- <tr>
 									    	<td>
 									    		<select class="form-control">
 												  <option>Item 1</option>
@@ -658,17 +348,16 @@
 											<td><center>
 												<button id="1" onclick="defectiveDeleteItem(id)" class="btn-light btn">X</button></center>
 											</td>
-											</tr>
+											</tr> -->
 											</span>
 									    </tbody>
 									    </table>
-									    <button type="button" class="btn btn-sm btn-primary">
-										<span id="chosenStatus" onclick="defectiveAddItem()"> + More Items </span>
-										</button>
+									    <button type="button" class="btn btn-sm btn-primary" id="moreitemsbtn" onclick="defectiveAddItem(value)"> + More Items 
+									    </button>
 										<form>
 							        		<div class="form-group">
-								        		<label for = "decline-reason" class = "col-form-label">Comments:</label>
-								        		<textarea class="form-control" id="message-text"></textarea>
+								        		<label for = "defective-comments" class = "col-form-label">Comments:</label>
+								        		<textarea class="form-control" id="defective-comments"></textarea>
 								        	</div>
 							        	</form>
 							    	</div>
@@ -693,7 +382,7 @@
 					        
 					        <div class="modal-footer">
 					        	<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-					        	<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#confirmModal" id="submitUpdate">Submit</button>
+					        	<button type="button" class="btn btn-primary" data-toggle="modal" onclick="submitUpdate(this)" id="submitUpdate">Submit</button>
 					    	</div>
 					    </div>
 					</div>
@@ -779,8 +468,8 @@
 			    </div>
 			    <div class="itemsandloader-div">
 			    	<div id="items-loader">
-						<center>
-							<img src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif">
+						<center><img style="width:20%" src="C:\Users\user\Desktop\farts\liars-2.gif"><!-- 
+							<img src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif"> -->
 						</center>
 					</div>
 					<div class="items-div" id="items-div">
@@ -850,9 +539,8 @@
 				    <!-- Modal content-->
 				    <div class="modal-content">
 				      <div class="modal-header">
-				        <h4 class="modal-title">Item Summary</h4>
 				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				        
+				        <h4 class="modal-title">Item Summary</h4>
 				      </div>
 				      <div class="modal-body">
 				        <span id="sum-name"></span><br>
@@ -860,7 +548,7 @@
 				        <span id="sum-quan"></span>
 				        <span id="sum-amount"></span>
 				        <span id="sum-unit"></span>
-				        <span style="height:25px;display: block;"> </span>
+
 				        <div class="summary-img-preview">
 				        <img height="300" src="images/add-item-default.png" alt="preview" id="sum-image" >
 				        </div> <br>
@@ -887,17 +575,11 @@
 
 				  </div>
 				</div>
-
 			 <!--history-->
 			 <div id="history_div" style="display:none">
 			 	<div id="wrapper">
-			 		<input class="searchBarLong" name="searchQueryHistory" id="searchQueryHistory" placeholder="Filter history..">
+			 		<input class="searchBarLong" name="search" id="searchQueryHistory" placeholder="Filter history..">
 			        
-			 		<div id="history-loader">
-						<center>
-							<img src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif">
-						</center>
-					</div>
 
 				    <div id="historytablediv"></div>
 				  </div>
@@ -917,71 +599,8 @@
 		<script src="accountability.js"></script>
 		<script src="history.js"></script>
 	
+		<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
   		<script src="js/bootstrap.min.js"></script>
 	</body>
 	
 </html>	
-
-
-<!--View History Modal-->
-				<div id="item-history-modal" class="modal fade" role="dialog">
-				  <div class="modal-dialog">
-
-				    <!-- Modal content-->
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h4 class="modal-title">Item History</h4>
-				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				        
-				      </div>
-				      <div class="modal-body">
-				        <span id="hist-name"></span><br>
-				        <span id="hist-cat"></span><br>
-				        <span id="hist-quan"></span>
-				        <span id="hist-amount"></span>
-				        <span id="hist-unit"></span>
-				        <span style="height:25px;display: block;"> </span>
-				        <div class="hist-img-preview">
-				        <img height="300" src="images/add-item-default.png" alt="preview" id="sum-image" >
-				        </div> <br>
-				      
-				      </div>
-				      <div class="modal-footer">
-				        <button data-dismiss="modal" >OK</button>
-				      </div>
-				    </div>
-
-				  </div>
-				</div>
-
-<!--Item update Modal-->
-				<div id="item-update-modal" class="modal fade" role="dialog">
-				  <div class="modal-dialog">
-
-				    <!-- Modal content-->
-				    <div class="modal-content">
-				      <div class="modal-header">
-				        <h4 class="modal-title">Update Item Status</h4>
-				        <button type="button" class="close" data-dismiss="modal">&times;</button>
-				        
-				      </div>
-				      <div class="modal-body">
-				        <span id="update-name"></span><br>
-				        <span id="update-cat"></span><br>
-				        <span id="update-quan"></span>
-				        <span id="update-amount"></span>
-				        <span id="update-unit"></span>
-				        <span style="height:25px;display: block;"> </span>
-				        <div class="update-img-preview">
-				        <img height="300" src="images/add-item-default.png" alt="preview" id="sum-image" >
-				        </div> <br>
-				      
-				      </div>
-				      <div class="modal-footer">
-				        <button class="btn modal-add-btn"  data-dismiss="modal" id="modal-confirm-update-btn"> Confirm </button>
-				        <button class="btn modal-cancel-btn" data-dismiss="modal" id="modal-cancel-summary-btn">Cancel</button>
-				      </div>
-				    </div>
-
-				  </div>
-				</div>
