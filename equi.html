@@ -1,0 +1,1289 @@
+
+
+<html>
+	<header>
+  		<link rel="stylesheet" href="equipment.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="login.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="accountability.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="history.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="inventory.css" type="text/css" charset="utf-8" />
+		<link rel="stylesheet" href="css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="js/bootstrap.min.js" ></script>
+		
+		<script src="https://www.gstatic.com/firebasejs/5.9.2/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+		    apiKey: "AIzaSyBVmpJb26Kgsj6sOVBAJJYkaiQ1Bg8Whto",
+		    authDomain: "magraduateko.firebaseapp.com",
+		    databaseURL: "https://magraduateko.firebaseio.com",
+		    projectId: "magraduateko",
+		    storageBucket: "magraduateko.appspot.com",
+		    messagingSenderId: "823023783502"
+		  };
+		  firebase.initializeApp(config);
+		  firebase.auth().onAuthStateChanged(function(user) {
+			  if (user) {
+			    // /alert("logged in");
+			  } else {
+			    window.location.href = 'login.html'; 
+			  }
+			});		
+		</script>
+	</header>
+	<body>
+		<div id="tabmenuEq">
+			<ul>
+			   <li id="microscope" class='floatLeft active' onclick="microscope()"><a href='#' >Microscope</a></li>
+			   <li><a id="logoutBtn" onclick="logout()" href="#">Logout</a></li>
+			</ul>
+		</div>	
+
+		<div class="slider">
+			<div id="dropdownClass">Classes</div>
+			<div id="dropdownSem">Semester</div>
+			<div id="dropdownStatus">
+				<select id="chooseStatus" class="chooseStatus">
+					<option value="active">Active</option>
+					<option value="archived">Archived</option>
+				</select>
+			</div>
+			<div class="equi-buttons">
+				<button id="addClass-btn" onclick="addClass()"> Add class</button>
+				<button id="viewClasses-btn" onclick="viewClasses()"> View classes</button>
+				<button id="addSemester-btn" onclick="addSemester()">Add semester</button>
+				<button id="viewSemester-btn" onclick="viewSemesters()"> View semesters</button>
+					<button onclick='addGroup()' id='addGroup_btn'>Add new group</button>		
+			</div>
+		</div>
+
+		<div class="content_div">
+			
+			<div class="groupings-div">
+			    	<div id="groupings-loader">
+						<center>
+							<img src="https://loading.io/spinners/typing/lg.-text-entering-comment-loader.gif">
+						</center>
+					</div>
+			    </div>
+			<div id="createGroup_div" style="display: none;">
+				
+				
+			</div>
+		</div>
+
+
+		<!--edit Group Modal-->
+				<div id="edit-group-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Edit Group</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				        Semester: <div id="semDD-edit"></div>
+				        Class: <div id="classDD-edit"></div>
+						
+				        Item: 
+				        	<div id="itemDD-edit"></div>
+				        <p class="multiSel-edit">Students: &nbsp;</p>  
+				    	<div class="studentDiv">
+					        <dl class="dropdown" id="dropdownSearchDiv"> 
+							    <dt>
+							    <a href="#">
+							    	<input type="text" name="searchStudent" id="searchStudent" class="searchStudent" placeholder="Click to view or hide students list."> 
+							      
+							     
+							    </a>
+							    </dt>
+							  
+							    <dd>
+							        <div class="studentslist-edit" id="studentslist-edit">
+							        </div>
+							    </dd>
+
+							</dl>
+				        <!-- <input type="text" name="edit-itemID" id="edit-itemID"></input>
+				        -->
+				      
+				      </div>
+				      <div class="modal-footer">
+				        <button class="btn edit-summary-confirm-btn"  data-dismiss="modal" id="edit-summary-confirm-btn" onclick="groupSummary()"> Confirm </button>
+				        <button class="btn edit-summary-cancel-btn" data-dismiss="modal" id="edit-summary-cancel-btn" onclick="cancelAdd()">Cancel</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</div>
+	<!--Confirmation Modal-->
+				<div class="modal" id="confirmModal" role="dialog">
+					<div class="modal-dialog">
+				    
+				    	<!-- Decline Model Content -->
+					    <div class="modal-content">
+					    	<div class="modal-header">
+					        	<h4 class="modal-title">Confirm</h4>
+					        	<button type="button" class="close" data-dismiss="modal">&times;</button>
+					        </div>
+					        <div class="modal-body">
+					        	<form>
+					        		<div class="form-group">
+						        		<label for = "decline-reason" class = "col-form-label">Archive this group?</label>
+						        	</div>
+					        	</form>
+					        </div>
+					        
+					        <div class="modal-footer">
+					        	<button type="button" class="btn btn-default" data-dismiss="modal" id="cancelConfirm">Cancel</button>
+					        	<button type="button" class="btn btn-primary" data-dismiss="modal" onclick="confirmArchive()">Confirm</button>
+					    	</div>
+					    </div>
+				    
+					</div>
+				</div>
+				<span id="selectedSem"></span>
+				<span id="selectedClass"></span>
+
+						<!--Add Class Modal-->		
+				<div id="addClass-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Create New Class</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				      	<input type="text" name="newClassName" placeholder="Enter class name." id="newClassName"></input>
+				      </div>
+				      <div class="modal-footer">
+				        <button class="btn addClass-confirm-btn"  id="addClass-confirm-btn" onclick="addClassConfirm()"> Confirm </button>
+				        <button class="btn addClass-cancel-btn" data-dismiss="modal" id="addClass-cancel-btn">Cancel</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+
+				<div id="addClassConfirm-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Confirm Class</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+						Create new class for <span id="confirmClassName"></span>
+				      </div>
+				      <div class="modal-footer">
+				        <button class="btn addClass-confirm-btn"  id="addClass-confirm-btn" onclick="saveClass()"> Confirm </button>
+				        <button class="btn addClass-cancel-btn" data-dismiss="modal" id="addClass-cancel-btn">Cancel</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+
+
+				<div id="viewClass-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">View Classes</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				      	<div id="showingClasses"></div>
+				      </div>
+				      <div class="modal-footer">
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+
+
+						<!--Add Semester Modal-->		
+				<div id="addSemester-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Create New Semester</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				      	<input type="text" name="newSemesterName" placeholder="Enter semester code." id="newSemesterName"></input>
+				      	 <span id="error-sem" class="error"></span>
+				      </div>
+				      <div class="modal-footer">
+				        <button class="btn addSemester-confirm-btn"  id="addSemester-confirm-btn" onclick="addSemesterConfirm()"> Confirm </button>
+				        <button class="btn addSemester-cancel-btn" data-dismiss="modal" id="addSemester-cancel-btn">Cancel</button>
+				      </div>
+				    </div>
+
+				  </div>
+				</div>
+
+				
+
+				<!--Add Group Modal-->
+				<div id="add-group-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">New Group</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				        Semester: <div id="semDD"></div>
+				        Class: <div id="classDD"></div>
+						
+				        Item: 
+				        	<div id="itemDD"></div>
+				        <p class="multiSel">Students: &nbsp;</p>  
+				    	<div class="studentDiv">
+					        <dl class="dropdown" id="dropdownSearchDiv"> 
+							    <dt>
+							    <a href="#">
+							    	<input type="text" name="searchStudent" id="searchStudent" class="searchStudent" placeholder="Click to view or hide students list."> 
+							      
+							     
+							    </a>
+							    
+							    </dt>
+							  
+							    <dd>
+							        <div class="studentslist" id="studentslist">
+							        </div>
+							    </dd>
+
+							</dl>
+				        <!-- <input type="text" name="edit-itemID" id="edit-itemID"></input>
+				        -->
+				      
+				      </div>
+				      <div class="modal-footer">
+				        <button class="btn summary-confirm-btn"  data-dismiss="modal" id="summary-confirm-btn" onclick="groupSummary()"> Confirm </button>
+				        <button class="btn summary-cancel-btn" data-dismiss="modal" id="summary-cancel-btn" onclick="cancelAdd()">Cancel</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+			</div>
+
+
+				<!--Summary Group Modal-->
+				<div id="summary-group-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">New Group Summary</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				        Semester: <span id="sum-semester"></span><br> 
+				        Class: <span id="sum-class"></span><br>
+				        Item: <span id="sum-item"></span><br>
+				        Students: &nbsp;<span id="sum-students"></span> 
+				    </div>
+				      <div class="modal-footer">
+				        <button class="btn summary-save-btn"  data-dismiss="modal" id="summary-save-btn" onclick="saveGroup()"> Confirm </button>
+				        <button class="btn summary-cancel-btn" data-dismiss="modal" id="summary-cancel-btn" onclick="cancelSave()">Cancel</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+
+				<!--Summary Edit Group Modal-->
+				<div id="summary-edit-group-modal" class="modal " role="dialog">
+				  <div class="modal-dialog">
+
+				    <!-- Modal content-->
+				    <div class="modal-content">
+				      <div class="modal-header">
+				        <h4 class="modal-title">Group Summary</h4>
+				        <button type="button" class="close" data-dismiss="modal">&times;</button>
+				        
+				      </div>
+				      <div class="modal-body">
+				        Semester: <span id="sum-semester-edit"></span><br>
+				        Class: <span id="sum-class-edit"></span><br>
+				        Item: <span id="sum-item-edit"></span><br>
+				        Students: &nbsp;<span id="sum-students-edit"></span> 
+				    </div>
+				      <div class="modal-footer">
+				        <button class="btn summary-save-btn"  data-dismiss="modal" id="summary-save-btn" onclick="saveGroup()"> Confirm </button>
+				        <button class="btn summary-cancel-btn" data-dismiss="modal" id="summary-cancel-btn" onclick="cancelSave()">Cancel</button>
+				      </div>
+				    </div>
+				  </div>
+				</div>
+	</body>
+</html>
+
+<script type="text/javascript">
+	var addStudents = [];
+	var editStudents = [];
+	var transact = "add";
+	var editGroupID;
+	$(document).ready(function(){
+
+		loadClasses();
+		var loadfirst = setInterval(function(){
+			if ($("#chooseClass").val() == undefined){
+				console.log("it's undefined");
+			}else{
+
+				getGroupings();
+				clearInterval(loadfirst);
+			}
+		}, 2000);
+
+	});
+	
+	function getGroupings(){
+		selectedClass = $("#chooseClass").val();
+		
+		var group_div = "<table id='createGroup_table'><tr><th> Semester </th> <th> Class</th> <th>Students </th><th>Item ID </th><th>Status </th><th>Options</th></tr><tbody id='create_tbody'></tbody></table>";
+
+		console.log("loading groupings for "+ selectedClass);
+   		document.getElementById("createGroup_div").style.display = "none";
+		document.getElementById("groupings-loader").style.display = "block"; 	
+		var groupingDataRef = firebase.database().ref("equipment/microscope/grouping");
+
+		groupingDataRef.orderByChild("classID").equalTo(selectedClass).once("value").then(function(snapshot) {
+				var data = snapshotToArray(snapshot);
+				data = data.filter(getActive);
+				console.log(data)
+				data = data.filter(getSemester);
+				console.log(data)
+				//console.log(data)
+				data.reverse();
+				if (data.length == 0){
+					newTD = ""
+					console.log("new data")
+					newTD += "<tr><td colspan='6'> No groupings on this subject yet. </td></tr>";
+					$("#createGroup_table").append(newTD);
+				}
+				data.forEach(function(item){
+					newTD = "";
+					var gID = item.groupID;
+					newTD += "<tr><td>"+ item.semester + "</td> <td>"+ item.classID + "</td> <td> "+ item.students+ "</td> <td>"+ item.itemID+"</td> <td> "+ item.status+ "</td> <td><i class='fa fa-pencil-square-o' aria-hidden='true' id="+item.key + " onclick='editGroup(this)'></i><i class='fa fa-archive' id="+item.key +" onclick='archiveGroup(this)'></i> </td></tr>";
+					$("#createGroup_table").append(newTD);
+				});
+			});
+		var container = document.getElementById("createGroup_div");
+		container.innerHTML = group_div;
+		document.getElementById("groupings-loader").style.display = "none"; 	
+   		document.getElementById("createGroup_div").style.display = "block";
+	}
+
+function addGroup(){
+	transact = "add";
+		addStudents = [];
+		var semesters = [];
+	    $('#chooseSem > option').each( function() {
+	         semesters.push( $(this).text());
+	    });
+
+		var semdropdown="";
+			semdropdown += "<select class='chooseSem' id='new-chooseSem'>";
+			
+			semesters.forEach(function(semval) {
+				semdropdown += "<option value="+semval+"> "+ semval+ "</option>";	
+			});
+			semdropdown += "</select>"
+			var semdropdownSem = document.getElementById("semDD");
+			
+			semdropdownSem.innerHTML = semdropdown;
+
+		var classes = [];
+	    $('#chooseClass > option').each( function() {
+	         classes.push( $(this).text());
+	    });
+
+		var classDropdown="";
+			classDropdown += "<select class='chooseClass' id='new-chooseClass'>";
+			
+			classes.forEach(function(classval) {
+				classDropdown += "<option value="+classval+"> "+ classval+ "</option>";	
+			});
+			classDropdown += "</select>"
+			var classDropdownDiv = document.getElementById("classDD");
+			classDropdownDiv.innerHTML = classDropdown;
+		$('#add-group-modal').modal('show');
+		
+		firebase.database().ref("equipment/microscope/item").once("value").then(function(snapshot) {
+			var itemsDropdown="";
+			itemsDropdown += "<select class='chooseitems' id='chooseitems'>";
+			
+			snapshot.forEach(function(itemsval) {
+				if (itemsval.val().status == 'selected'){
+				itemsDropdown += "<option value="+itemsval.val().itemID+" class='selectedItem' disabled> "+ itemsval.val().itemID+ "</option>";	
+				}
+				itemsDropdown += "<option value="+itemsval.val().itemID+" selected> "+ itemsval.val().itemID+ "</option>";	
+			});
+			itemsDropdown += "</select>"
+			var itemsDropdownSem = document.getElementById("itemDD");
+			
+			itemsDropdownSem.innerHTML = itemsDropdown;
+
+		});
+
+
+		getStudents();
+
+		$('#add-group-modal').modal('show');
+		$(".dropdown dd ul").hide();
+
+
+
+	}
+
+
+function editGroup(group){
+		transact = "edit"
+		editStudents = [];
+		var semesters = [];
+	    $('#chooseSem > option').each( function() {
+	         semesters.push( $(this).text());
+	    });
+
+		var semdropdown="";
+			semdropdown += "<select class='chooseSem' id='new-chooseSem-edit'>";
+			
+			semesters.forEach(function(semval) {
+				semdropdown += "<option value="+semval+"> "+ semval+ "</option>";	
+			});
+			semdropdown += "</select>"
+			var semdropdownSem = document.getElementById("semDD-edit");
+			
+			semdropdownSem.innerHTML = semdropdown;
+
+		var classes = [];
+	    $('#chooseClass > option').each( function() {
+	         classes.push( $(this).text());
+	    });
+
+		var classDropdown="";
+			classDropdown += "<select class='chooseClass' id='new-chooseClass-edit'>";
+			
+			classes.forEach(function(classval) {
+				classDropdown += "<option value="+classval+"> "+ classval+ "</option>";	
+			});
+			classDropdown += "</select>"
+			var classDropdownDiv = document.getElementById("classDD-edit");
+			classDropdownDiv.innerHTML = classDropdown;
+		;
+		
+		firebase.database().ref("equipment/microscope/item").once("value").then(function(snapshot) {
+			var itemsDropdown="";
+			itemsDropdown += "<select class='chooseitems' id='chooseitems-edit'>";
+			
+			snapshot.forEach(function(itemsval) {
+				if (itemsval.val().status == 'selected'){
+				itemsDropdown += "<option value="+itemsval.val().itemID+" class='selectedItem' disabled> "+ itemsval.val().itemID+ "</option>";	
+				}
+				itemsDropdown += "<option value="+itemsval.val().itemID+" selected> "+ itemsval.val().itemID+ "</option>";	
+			});
+			itemsDropdown += "</select>"
+			var itemsDropdownSem = document.getElementById("itemDD-edit");
+			
+			itemsDropdownSem.innerHTML = itemsDropdown;
+
+		});
+
+		getStudents();
+		setTimeout(function(){
+			editGroupID = group.id;
+			var groupingDataRef = firebase.database().ref("equipment/microscope/grouping");
+
+			groupingDataRef.orderByChild("groupID").equalTo(editGroupID).once("value").then(function(snapshot) {
+				snapshot.forEach(function(childSnapshot){
+					$("#new-chooseSem-edit").val(childSnapshot.val().semester);	
+					$("#new-chooseClass-edit").val(childSnapshot.val().classID);
+					$("#chooseitems-edit").val(childSnapshot.val().itemID);
+					var html = "";
+					var currentStudents = childSnapshot.val().students;
+					currentStudents.forEach(function(student){
+						html += '<span title="' + student + ',">' + student + ' &nbsp; </span>';
+						editStudents.push(student);
+						console.log(editStudents)
+						$(":checkbox[value='"+student+"']").prop("checked", true);
+					});
+
+					$('.multiSel-edit').append(html);
+					
+				})	;
+			});
+			
+		}, 2000)
+		setTimeout(function(){
+			$('#edit-group-modal').modal('show');
+		}, 3000)
+		
+ $(".dropdown dd ul").hide();
+		/*firebase.database().ref("student").once("value").then(function(snapshot) {
+			var itemsDropdown="";
+			itemsDropdown += "<select items='chooseitems' id='chooseitems'>";
+			
+			snapshot.forEach(function(itemsval) {
+				if (itemsval.val().status == 'selected'){
+				itemsDropdown += "<option value="+itemsval.val().itemID+" class='selectedItem' disabled> "+ itemsval.val().itemID+ "</option>";	
+				}
+				itemsDropdown += "<option value="+itemsval.val().itemID+" selected> "+ itemsval.val().itemID+ "</option>";	
+			});
+			itemsDropdown += "</select>"
+			var itemsDropdownSem = document.getElementById("itemDD");
+			
+			itemsDropdownSem.innerHTML = itemsDropdown;
+		$('#add-group-modal').modal('show');
+
+		});*/
+
+}
+/*
+function getClass(element){
+	selectedClass = $("#chooseClass").val();
+	console.log(selectedClass);
+	var regexStatus = new RegExp( selectedClass, 'gi' );
+    return (element['classID'].match(regexStatus));
+}
+*/
+function filteringStudents(element) {
+	var regex = new RegExp(searchStudentQuery, 'gi' );
+    return (element['name'].match(regex));
+}
+
+var takenStudents = [];
+function getStudents(){
+	selectedClass =  $("#chooseClass").val();
+		var groupingDataRef = firebase.database().ref("equipment/microscope/grouping");
+
+		groupingDataRef.orderByChild("classID").equalTo(selectedClass).once("value").then(function(snapshot) {
+				var data = snapshotToArray(snapshot);
+				data = data.filter(getActive);
+				data = data.filter(getSemester);
+				takenStudents = [];
+				data.forEach(function(stu){
+					for (var i = 0; i < stu.students.length; i++) {
+						takenStudents.push(stu.students[i]);
+					};
+				})
+				console.log(takenStudents)
+					});
+
+			firebase.database().ref("users").orderByChild("name").once("value").then(function(snapshot) {
+			var studentsDropdown="";
+			studentsDropdown += "<ul name='chooseStudents' id='chooseStudents' >";
+			var data = snapshotToArray(snapshot);
+			data = data.filter(filteringStudents);
+			var mystudents = [];
+			data.forEach(function(dat){
+				if (dat.laboratory == "student"){
+					mystudents.push(dat.name)	
+				}
+				
+			});
+
+			mystudents = removingTakenStudents(mystudents, takenStudents);
+			console.log("HUYYYY", mystudents);
+			for (var i = mystudents.length - 1; i >= 0; i--) {
+				studentsDropdown += "<li> <input type='checkbox' id='studentCheck' value='"+mystudents[i]+"' > "+ mystudents[i] + "</li>";
+			}
+			studentsDropdown += "</ul>";
+			//console.log(studentsDropdown)
+			var studentsDropdownSem = document.getElementById("studentslist");
+			var studentsDropdownSemForEdit = document.getElementById("studentslist-edit");
+			studentsDropdownSemForEdit.innerHTML =  studentsDropdown;
+			studentsDropdownSem.innerHTML = studentsDropdown;
+
+			$(".dropdown dd ul").show();
+		});
+}
+function removingTakenStudents(mystudents, takenStudents){
+		if (transact == "add"){
+		console.log("what the fuck")
+		for (var j = mystudents.length - 1; j >= 0; j--) {
+			
+			for (var i = takenStudents.length - 1; i >= 0; i--) {
+				if (mystudents[j] == takenStudents[i]){
+					mystudents.splice( mystudents.indexOf(mystudents[j]), 1 );
+					console.log("removing ", takenStudents[i])
+				}
+			}
+
+		}
+		console.log("idkkk")
+	}
+
+
+		return mystudents;
+}
+function cancelAdd(){
+	console.log("cancel add")
+	$(":checkbox").prop("checked", false);
+	$('.multiSel').html("Students: &nbsp;");
+	$('.multiSel-edit').html("Students: &nbsp;");
+}
+
+function cancelSave(){
+	$("#sum-semester").html("");
+	$("#sum-class").html("");
+	$("#sum-item").html("");
+	$("#sum-students").html("");
+	$("#sum-semester-edit").html("");
+	$("#sum-class-edit").html("");
+	$("#sum-item-edit").html("");
+	$("#sum-students-edit").html("");
+}
+function hideDr(){
+	$("#chooseStudents").attr("style", "display:none;");
+}
+function getActive(element) {
+	selectedStatus = $("#chooseStatus").val();
+	console.log(selectedStatus)
+	var regexStatus = new RegExp( selectedStatus, 'gi' );
+    return (element['status'].match(regexStatus));
+}
+
+function getSemester(element) {
+	selectedSem = $("#chooseSem").val();
+	console.log(selectedSem)
+	var regexSem = new RegExp(selectedSem, 'gi' );
+    return  (element['semester'].match(regexSem));
+}
+
+var searchStudentQuery;
+$('#searchStudent').on('keypress keydown keyup',function(){
+			searchStudentQuery = $("#searchStudent").val();
+				getStudents();
+          console.log(searchStudentQuery);
+
+         });
+
+$(document).on('change', 'select.chooseClass', function() {
+            getGroupings();
+        });
+$(document).on('change', 'select.chooseSem', function() {
+            getGroupings();
+        });
+$(document).on('change', 'select.chooseStatus', function() {
+            getGroupings();
+        });
+
+function loadClasses(){
+		firebase.database().ref("equipment/microscope/class").once("value").then(function(snapshot) {
+			var checks="";
+			var viewingClass = "";
+			checks += "<select class='chooseClass' id='chooseClass'>";
+			viewingClass += "<ul>";
+    		snapshot.forEach(function(childSnapshot) {
+    			viewingClass += "<li> " + childSnapshot.val().code + "</li>";
+    			console.log(childSnapshot.val().code)
+				checks += "<option value="+childSnapshot.val().code+"> "+ childSnapshot.val().code+ "</option>";	
+			});
+			checks += "</select>"
+			viewingClass += "</ul>";
+			console.log(checks)
+			var dropdownClass = document.getElementById("dropdownClass");
+			var modalClass = document.getElementById("showingClasses");
+			dropdownClass.innerHTML = checks;
+			modalClass.innerHTML = viewingClass;
+			});
+
+		firebase.database().ref("equipment/microscope/semester").once("value").then(function(snapshot) {
+			var dropdown="";
+			dropdown += "<select class='chooseSem' id='chooseSem'>";
+			
+			snapshot.forEach(function(childSnapshot) {
+				dropdown += "<option value="+childSnapshot.val().code+"> "+ childSnapshot.val().code+ "</option>";	
+			});
+			dropdown += "</select>"
+			var dropdownSem = document.getElementById("dropdownSem");
+			
+			dropdownSem.innerHTML = dropdown;
+
+			});
+			console.log("end of load sem")			
+		}
+
+function getClassesAndSem(snapshot, once) {
+    var classes = [];
+    var semesters = [];
+   // console.log(snapshot)
+    snapshot.forEach(function(childSnapshot) {
+        var itemClass = childSnapshot.val().classID;
+        //item.key = childSnapshot.key;
+        var itemSem = childSnapshot.val().semester;
+        if( $.inArray(itemClass, classes) != -1){
+		     
+		} else {
+		    classes.push(itemClass);
+		}
+		if( $.inArray(itemSem, semesters) != -1){
+		     
+		} else {
+		    semesters.push(itemSem);
+		}
+    });
+    var returnArr = [];
+    returnArr.push(classes);
+    returnArr.push(semesters);
+   // console.log(returnArr)
+    if (once == false){
+    	once = true;
+			$("#selectedSem").text(semesters[0]);
+			$("#selectedClass").text(classes[0]);
+    		console.log("SELCTED DEFAULT")
+    }
+    selectedClass = $("#selectedClass").text();
+    selectedSem = $("#selectedSem").text()
+    
+    
+    return returnArr;
+}
+
+
+function archiveGroup(groupID){
+	updateThisGroup = groupID.id;
+	$('#confirmModal').modal('show');
+	
+	}
+
+function addClass(){
+	$('#addClass-modal').modal('show');
+}
+
+
+function addClassConfirm(){
+	$("#confirmClassName").text($('#newClassName').val() + "?");
+	$('#addClass-modal').modal('hide');
+	$('#addClassConfirm-modal').modal('show');
+}
+function saveClass(){
+	var code = $('#newClassName').val();
+	console.log(code)
+	var newClass={
+		"code": code
+	}
+	var classref = firebase.database().ref("equipment/microscope/class");
+	classref.push(newClass);
+	$('#chooseClass').append($("<option value='" + code + "'>"+ code + "</option>"));
+	$('#addClassConfirm-modal').modal('hide');
+
+}
+
+
+function viewClasses(){
+	$("#showingClasses").text()
+	$('#viewClass-modal').modal('show');
+}
+function addSemester(){
+	$('#addSemester-modal').modal('show');
+}
+
+$(document).ready(function(){
+    var $regexunit=/^(FS|SS|MY)(1|2)[0-9](1|2)[0-9]+$/;
+    $('#newSemesterName').on('keypress keydown keyup',function(){
+             if (!$(this).val().match($regexunit) || $(this).val() == 0 ) {
+              $("#error-sem").html("Please enter a valid semester code.");
+             }
+           else{
+                $("#error-sem").html("");
+               }
+         });
+});
+function addSemesterConfirm(){
+	var code = $('#newSemesterName').val();
+	console.log(code)
+	var newSemester={
+		"code": code
+	}
+	var semref = firebase.database().ref("equipment/microscope/semester");
+	semref.push(newSemester);
+	$('#chooseSem').append($("<option value='" + code + "'>"+ code + "</option>"));
+	$('#addSemester-modal').modal('hide');
+}
+	function confirmArchive(){
+		var updates = {};
+		updates["equipment/microscope/grouping/" + updateThisGroup+"/"+"status"] = "archived";
+		firebase.database().ref().update(updates);
+		getGroupings();
+}
+
+//		var oldValues = $(groupID).closest("tr").find('td');
+
+	function cancelEdit(){
+		console.log("cancel edit")
+		$('#item-edit-modal').find('input').val('');
+	}
+	
+
+$(".dropdown dt a").on('click', function() {
+  $(".dropdown dd ul").slideToggle('fast');
+});
+
+$(".dropdown dd ul li a").on('click', function() {
+  $(".dropdown dd ul").hide();
+});
+$("#add-group-modal").ready(function(){
+		 $(".dropdown dd ul").hide();
+});
+function getSelectedValue(id) {
+  return $("#" + id).find("dt a span.value").html();
+}
+
+$(document).bind('click', function(e) {
+  var $clicked = $(e.target);
+  if (!$clicked.parents().hasClass("dropdown")) $(".dropdown dd ul").hide();
+});
+
+
+$("#dropdownSearchDiv").blur(function(){
+  		$(".dropdown dd ul").hide();
+});
+
+/*
+$('#studentslist').on('click', function() {
+		console.log($(this))
+  var title = $(this).closest('.studentslist').find('input[type="checkbox"]').val(),
+    title = $(this).val() + ",";
+
+  if ($(this).is(':checked')) {
+  	addStudents.push(title);
+    var html = '<span title="' + title + '">' + title + '</span>';
+    $('.multiSel').append(html);
+    $(".hida").hide();
+  } else {
+  	addStudents.pop(title);
+    $('span[title="' + title + '"]').remove();
+    var ret = $(".hida");
+    $('.dropdown dt a').append(ret);
+  }
+  console.log(addStudents)
+});
+
+$('#studentslist').find('input[type=checkbox]').click(function(event) {
+  console.log(this)
+  var val = $(this).val();
+  var parent = $(this).closest(".li");
+  if(this.checked) {
+    parent.css({
+      'background-color': 'lightgreen'
+    });
+  } else {
+    parent.css({
+      'background-color': 'lightgray'
+    });
+  }
+});
+
+$('#studentslist').on('click', function() {
+
+  var title = $(this).find('input[type="checkbox"]').val();
+    //title = $(this).val() + ",";
+    	console.log(title)
+   if ($(this).is(':checked')) {
+  	addStudents.push(title);
+    var html = '<span title="' + title + '">' + title + '</span>';
+    $('.multiSel').append(html);
+    $(".hida").hide();
+  } else {
+  	addStudents.pop(title);
+    $('span[title="' + title + '"]').remove();
+    var ret = $(".hida");
+    $('.dropdown dt a').append(ret);
+  }
+  console.log(addStudents)
+});
+*/
+$(document).on("click", "input[id='studentCheck']", function (event) {
+		console.log($(this).val());
+		var title = $(this).val() + ",";
+		  if ($(this).is(':checked')) {
+  	addStudents.push($(this).val());
+  	editStudents.push($(this).val());
+    var html = '<span title="' + title + '">' + title + '</span>';
+    $('.multiSel').append(html);
+    $('.multiSel-edit').append(html);
+    $(".hida").hide();
+  } else {
+  	addStudents.pop($(this).val());
+	editStudents.pop($(this).val());
+    $('span[title="' + title + 	'"]').remove();
+    var ret = $(".hida");
+    $('.dropdown dt a').append(ret);
+  }
+  console.log(addStudents)
+  console.log(editStudents)
+});
+/*
+$('.studentslist input[type="checkbox"]').on('click', function() {
+
+  var title = $(this).closest('.studentslist').find('input[type="checkbox"]').val(),
+    title = $(this).val() + ",";
+
+  if ($(this).is(':checked')) {
+  	addStudents.push(title);
+    var html = '<span title="' + title + '">' + title + '</span>';
+    $('.multiSel').append(html);
+    $(".hida").hide();
+  } else {
+  	addStudents.pop(title);
+    $('span[title="' + title + '"]').remove();
+    var ret = $(".hida");
+    $('.dropdown dt a').append(ret);
+  }
+  console.log(addStudents)
+});*/
+
+
+$("#add-group-modal").on("hidden.bs.modal", function () {
+	console.log("CLOSED")
+    $(":checkbox").prop("checked", false);
+	$('.multiSel').html("Students: &nbsp;");
+	$('.multiSel-edit').html("Students: &nbsp;");
+
+});
+
+$("#edit-group-modal").on("hidden.bs.modal", function () {
+	console.log("CLOSED")
+    $(":checkbox").prop("checked", false);
+	$('.multiSel-edit').html("Students: &nbsp;");
+	$('.multiSel').html("Students: &nbsp;");
+});
+
+function groupSummary(){
+	$('#add-group-modal').modal('hide');
+	$('#edit-group-modal').modal('hide');
+	var semester = $("#new-chooseSem").val();
+	var class1 = $("#new-chooseClass").val();
+	var item = $("#chooseitems").val();
+
+	var semesterEdit = $("#new-chooseSem-edit").val();
+	var classEdit = $("#new-chooseClass-edit").val();
+	var itemEdit = $("#chooseitems-edit").val();
+
+	console.log(semester, class1, item, addStudents)
+	console.log(editStudents);
+	$("#sum-semester").html(semester);
+	$("#sum-class").html(class1);
+	$("#sum-item").html(item);
+	$("#sum-students").html(addStudents);
+	
+
+	$("#sum-semester-edit").html(semesterEdit);
+	$("#sum-class-edit").html(classEdit);
+	$("#sum-item-edit").html(itemEdit);
+	$("#sum-students-edit").html(editStudents);
+
+	if (transact == "add"){
+		$('#summary-group-modal').modal('show');
+	}
+	else{
+	$('#summary-edit-group-modal').modal('show');
+
+	}
+
+
+}
+
+function saveGroup(){
+		if (transact == "add"){
+			var groupingDataRef = firebase.database().ref("equipment/microscope/grouping");
+		var newgroupRef = groupingDataRef.push();
+		var groupID = newgroupRef.key;
+		var semester = $("#new-chooseSem").val();
+		var class1 = $("#new-chooseClass").val();
+		var item = $("#chooseitems").val();
+			var newGroupData = {
+			"groupID": groupID,
+			"classID":class1,
+			"itemID": item,
+			"semester" : semester,
+			"status":"active",
+			"students":addStudents
+				}
+				newgroupRef.set(newGroupData);
+		console.log("Group has been saved");
+		}else{
+			var semesterEdit = $("#new-chooseSem-edit").val();
+			var classEdit = $("#new-chooseClass-edit").val();
+			var itemEdit = $("#chooseitems-edit").val();
+			var newGroupData = {
+			"groupID": editGroupID,
+			"classID":classEdit,
+			"itemID": itemEdit,
+			"semester" : semesterEdit,
+			"status":"active",
+			"students": editStudents
+		}
+			var updates = {}
+			console.log(editGroupID)
+			updates["equipment/microscope/grouping/" + editGroupID] = newGroupData;
+			firebase.database().ref().update(updates);
+		}
+		
+		getGroupings();
+}
+</script>
+<script src="inventory.js"></script>
+<script src="login.js"></script>
+<style type="text/css">
+	.selectedItem{
+		background-color: pink;
+	}
+	#createGroup_table {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+}
+	
+	#createGroup_table td, #createGroup_table th {
+	    border: 1px solid #ddd;
+	    padding: 5px;
+	}
+
+	#createGroup_table tr:nth-child(even){background-color: #f2f2f2;}
+
+	#createGroup_table tr:hover {background-color: #ddd;}
+
+	#createGroup_table th {
+	    padding-top: 10px;
+	    padding-bottom: 10px;
+	    text-align: left;
+	    background-color: #47c9af;
+	    color: white;
+	}
+	
+
+	/* tab menu */
+.request_header{
+  padding-top: 20px;
+}
+@import url(http://fonts.googleapis.com/css?family=Raleway);
+#tabmenuEq,
+#tabmenuEq ul,
+#tabmenuEq ul li,
+#tabmenuEq ul li a {
+  color: white;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style: none;
+  line-height: 1;
+  display: block;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+
+}
+#tabmenuEq:after,
+#tabmenuEq > ul:after {
+  content: ".";
+  display: block;
+  clear: both;
+  visibility: hidden;
+  line-height: 0;
+  height: 0;
+
+}
+#tabmenuEq {
+  width: auto;
+  border-bottom: 3px solid #b29ca0;/*#47c9af;*/
+  font-family: Raleway, sans-serif;
+  line-height: 1;
+}
+#tabmenuEq ul {
+  background-color: #32353c;
+}
+.floatLeft{
+  float: left;
+}
+#logoutBtn{
+  float: right;
+}
+
+#tabmenuEq.align-center > ul {
+  font-size: 0;
+  text-align: center;
+}
+#tabmenuEq.align-center > ul > li {
+  display: inline-block;
+  float: none;
+}
+#tabmenuEq.align-right > ul > li {
+  float: right;
+}
+#tabmenuEq.align-right > ul > li > a {
+  margin-right: 0;
+  margin-left: -4px;
+
+}
+#tabmenuEq > ul > li > a {
+  z-index: 2;
+  padding: 18px 25px 12px 25px;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  color: #898a8e;
+  -webkit-transition: all .2s ease;
+  -moz-transition: all .2s ease;
+  -ms-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+  margin-right: -4px;
+}
+#tabmenuEq > ul > li.active > a,
+#tabmenuEq > ul > li:hover > a,
+#tabmenuEq > ul > li > a:hover {
+  color: #898a8e;
+  font-weight: 700;
+}
+#tabmenuEq > ul > li > a:after {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: -1;
+  width: 100%;
+  height: 120%;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  content: "";
+  -webkit-transition: all .2s ease;
+  -o-transition: all .2s ease;
+  transition: all .2s ease;
+  -webkit-transform: perspective(5px) rotateX(2deg);
+  -webkit-transform-origin: bottom;
+  -moz-transform: perspective(5px) rotateX(2deg);
+  -moz-transform-origin: bottom;
+  transform: perspective(5px) rotateX(2deg);
+  transform-origin: bottom;
+
+}
+#tabmenuEq > ul > li.active > a:after,
+#tabmenuEq > ul > li:hover > a:after,
+#tabmenuEq > ul > li > a:hover:after {
+  background: white;/*#47c9af;*/
+}
+
+/*------------------------*/
+
+
+
+
+.dropdown {
+  transform: translateY(-50%);
+}
+
+a {
+  color: blue;
+}
+
+.dropdown dd,
+.dropdown dt {
+  margin: 0px;
+  padding: 0px;
+}
+
+.dropdown ul {
+  margin: -1px 0 0 0;
+}
+
+.dropdown dd {
+  position: relative;
+}
+
+
+.dropdown dt a {
+  display: inline;
+
+  min-height: 25px;
+  line-height: 24px;
+  overflow: hidden;
+  border: 0;
+  width: 100%;
+}
+
+.dropdown dt a span,
+.multiSel span, .multiSel {
+  cursor: pointer;
+  display: inline;
+  padding: 0 3px 2px 0;
+  overflow-x:scroll ; 
+  margin-bottom: -14px;
+}
+
+.dropdown dd ul {
+  background-color: #f4f7fc;
+  display: none;
+  left: 0px;
+  padding: 2px 15px 2px 5px;
+  position: absolute;
+  top: 2px;
+  width: 100%;
+  list-style: none;
+  height: 100px;
+  overflow: auto;
+}
+
+.dropdown span.value {
+  display: none;
+}
+
+.dropdown dd ul li a {
+  padding: 5px;
+}
+
+.dropdown dd ul li a:hover {
+  background-color: #fff;
+}
+
+
+#searchStudent, select#new-chooseSem, select#new-chooseClass, #chooseItems, select#new-chooseSem-edit, select#new-chooseClass-edit, #chooseItems-edit{
+    width: 100%;
+}
+#chooseStatus, #chooseClass, #chooseSem{
+	width: 100%;
+}
+#ok-btn-students{
+	width: 20%;
+    float: right;
+    margin-top: 0;
+    height: 30;
+}
+.studentDiv{
+	margin-top: 30px;
+}
+</style>
